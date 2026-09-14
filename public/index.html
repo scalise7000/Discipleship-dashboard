@@ -444,7 +444,13 @@ function derive(){
   });
 
   var disByLeader = {};
-  DATA.disciples.forEach(function(d){ (disByLeader[d.leaderId]=disByLeader[d.leaderId]||[]).push(d); });
+  DATA.disciples.forEach(function(d){
+    var withName = Object.assign({}, d, { name: d.first + " " + d.last });
+    (disByLeader[d.leaderId] = disByLeader[d.leaderId] || []).push(withName);
+  });
+  Object.keys(disByLeader).forEach(function(k){
+    disByLeader[k].sort(function(x,y){ return x.last < y.last ? -1 : 1; });
+  });
 
   var leaders = DATA.leaders.map(function(l){
     var ms = byLeader[l.id] || [], ds = disByLeader[l.id] || [];
@@ -550,6 +556,12 @@ var TIPS = {
   quietpct: ["Leaders quiet three or more weeks",
     "The share of active leaders with no reported meeting for three consecutive ministry weeks. These are the "
   + "people to call."],
+  disciples: ["Disciple(s)",
+    "The people this leader is currently meeting with, listed last name first. The number beside the names is "
+  + "the count when there is more than one. A leader with nobody assigned shows as none assigned."],
+  log: ["Meetings",
+    "Opens this leader's full meeting log in a new tab: every ministry week since the year began, including "
+  + "the weeks with nothing reported, so gaps are visible rather than simply absent."],
   yearweeks: ["Ministry year",
     "Groups run the second week of August through December, then January through May. Weeks containing "
   + "Thanksgiving, Christmas, New Year's Day or Easter are not counted, which is what sets the total."]
@@ -700,10 +712,12 @@ function stat(v,l,n,alarm,tip){
 var COL = {
   leader:   {key:"name", label:"Leader", v:function(l){return l.last+l.first;},
              h:function(l){return '<td class="name">'+esc(l.name)+'</td>';}},
-  disciples:{key:"disciples", label:"Disciple(s)", v:function(l){return l.discipleCount;},
+  disciples:{key:"disciples", label:"Disciple(s)", tip:"disciples", v:function(l){return l.discipleCount;},
              h:function(l){
-               var names = l.disciples.map(function(d){return d.name;});
-               return '<td class="sub">'+esc(names.join(", ") || "—")+'</td>';}},
+               var names = l.disciples.map(function(d){ return d.name; }).filter(Boolean);
+               return '<td class="sub">'+(names.length
+                 ? esc(names.join(", ")) + (names.length > 1 ? ' <span class="tag">'+names.length+'</span>' : '')
+                 : '<span class="sub">none assigned</span>')+'</td>';}},
   start:    {key:"start", label:"Leader start date", tip:"leaderstart", v:function(l){return l.startDate||"";},
              h:function(l){return '<td class="n sub">'+fdate(l.startDate)+'</td>';}},
   total:    {key:"total", label:"Total times met", tip:"total", v:function(l){return l.totalMet;},
@@ -711,7 +725,7 @@ var COL = {
   rate:     {key:"rate", label:"Meetings %", tip:"meetrate", v:function(l){return l.meetRate;},
              h:function(l){return '<td class="n">'+pct(l.meetRate)
                +'<span class="minibar"><i style="width:'+Math.min(100,l.meetRate*100)+'%"></i></span></td>';}},
-  log:      {key:"log", label:"Meetings", v:function(l){return l.totalMet;},
+  log:      {key:"log", label:"Meetings", tip:"log", v:function(l){return l.totalMet;},
              h:function(l){return '<td><a href="#log='+l.id+'" target="_blank" rel="noopener">All '+l.totalMet+'</a></td>';}},
   recent:   {key:"recent", label:"Most recent meeting", tip:"recent", v:function(l){return l.lastMeeting?l.lastMeeting.date:"";},
              h:function(l){return '<td class="n">'+(l.lastMeeting
