@@ -4,9 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Discipleship Dashboard · Church at The Mill</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Narrow:wght@500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#16222E; --ink2:#41525F; --ink3:#72828D;
@@ -21,8 +18,8 @@
 html,body{margin:0;padding:0}
 body{
   background:var(--paper); color:var(--ink);
-  font-family:Archivo,"Helvetica Neue",Arial,sans-serif;
-  font-size:15px; line-height:1.45;
+  font-family:"Times New Roman",Times,serif;
+  font-size:16.5px; line-height:1.5;
   -webkit-font-smoothing:antialiased;
 }
 h1,h2,h3{margin:0; font-weight:600; letter-spacing:-.011em}
@@ -35,12 +32,12 @@ button,input,select,textarea{font:inherit; color:inherit}
 .masthead{background:var(--ink);color:#EDEFEE;padding:18px 0 16px}
 .masthead .wrap{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap}
 .brand h1{font-size:19px;color:#fff;line-height:1.2}
-.brand p{margin:2px 0 0;font-size:13px;color:#93A3AE}
+.brand p{margin:2px 0 0;font-size:14px;color:#93A3AE}
 .mast-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.yearchip{font-size:13px;color:#A8B7C1;border:1px solid #33465A;border-radius:var(--r);padding:5px 10px}
+.yearchip{font-size:14px;color:#A8B7C1;border:1px solid #33465A;border-radius:var(--r);padding:5px 10px}
 .btn{
   background:var(--card);border:1px solid var(--rule);border-radius:var(--r);
-  padding:6px 12px;font-size:13.5px;font-weight:500;cursor:pointer;color:var(--ink);
+  padding:6px 12px;font-size:14.5px;font-weight:500;cursor:pointer;color:var(--ink);
 }
 .btn:hover{background:#F4F6F5}
 .btn:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,
@@ -50,7 +47,7 @@ button,input,select,textarea{font:inherit; color:inherit}
 .btn.primary:disabled{background:#9AAAB1;border-color:#9AAAB1;cursor:not-allowed}
 .btn.ghost{background:transparent;border-color:#3A4E60;color:#D6DEE3}
 .btn.ghost:hover{background:#22323F}
-.btn.sm{padding:4px 9px;font-size:12.5px}
+.btn.sm{padding:4px 9px;font-size:13.5px}
 
 /* tabs */
 .tabbar{background:var(--card);border-bottom:1px solid var(--rule);position:sticky;top:0;z-index:20}
@@ -70,7 +67,7 @@ main{padding:26px 0 70px}
 .week{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);
   display:grid;grid-template-columns:270px 1fr;}
 .week-fig{padding:24px 26px;border-right:1px solid var(--rule2)}
-.week-fig .k{font-size:13px;color:var(--ink2);margin:0 0 10px}
+.week-fig .k{font-size:14px;color:var(--ink2);margin:0 0 10px}
 .week-fig .big{font-size:58px;line-height:.95;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
 .week-fig .of{font-size:22px;color:var(--ink3);font-weight:500}
 .week-fig .pct{margin:12px 0 0;font-size:15px;color:var(--ink2)}
@@ -80,13 +77,35 @@ main{padding:26px 0 70px}
 .week-grid{padding:22px 26px}
 .week-grid .hdr{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
 .week-grid h2{font-size:14.5px}
-.week-grid .sub{font-size:13px;color:var(--ink3)}
-.marks{display:flex;flex-wrap:wrap;gap:5px}
+.week-grid .sub{font-size:14px;color:var(--ink3)}
+.segbar{display:flex;height:34px;border-radius:var(--r);overflow:hidden;border:1px solid var(--rule)}
+.segbar i{display:block;height:100%}
+.segbar .s-met{background:var(--met)}
+.segbar .s-open{background:#DDE3E1}
+.segbar .s-quiet{background:var(--quiet)}
+.seglabels{display:flex;gap:26px;margin-top:12px;flex-wrap:wrap}
+.seglabel{display:flex;gap:9px;align-items:flex-start}
+.seglabel .sw{width:13px;height:13px;border-radius:2px;margin-top:4px;flex:none;border:1px solid}
+.seglabel .v{font-size:23px;font-weight:700;line-height:1.1}
+.seglabel .t{font-size:14px;color:var(--ink2)}
+.groups{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);
+  border:1px solid var(--rule);border-radius:var(--r);margin-top:18px;overflow:hidden}
+.grp{background:var(--card);padding:14px 16px}
+.grp h3{font-size:15px;margin-bottom:3px}
+.grp p{margin:0 0 9px;font-size:13.5px;color:var(--ink3)}
+.grp ul{list-style:none;margin:0;padding:0;max-height:210px;overflow:auto}
+.grp li{padding:4px 0;border-bottom:1px solid var(--rule2);font-size:14.5px}
+.grp li:last-child{border-bottom:0}
+.grp li button{background:none;border:0;padding:0;font:inherit;color:var(--link);cursor:pointer;text-align:left}
+.grp li button:hover{text-decoration:underline}
+.grp li .wk{float:right;color:var(--ink3);font-size:13.5px}
+.grp.quiet h3{color:var(--quiet)}
+@media (max-width:760px){.groups{grid-template-columns:1fr}}
 .mark{width:19px;height:19px;border-radius:2px;border:1px solid;padding:0;cursor:pointer;background:none;display:block}
 .mark.met{background:var(--met);border-color:var(--met)}
 .mark.none{background:#fff;border-color:#BFC8C5}
 .mark.quiet{background:var(--quiet);border-color:var(--quiet)}
-.legend{display:flex;gap:18px;margin-top:16px;font-size:12.5px;color:var(--ink2);flex-wrap:wrap}
+.legend{display:flex;gap:18px;margin-top:16px;font-size:13.5px;color:var(--ink2);flex-wrap:wrap}
 .legend span{display:flex;align-items:center;gap:6px}
 .swatch{width:11px;height:11px;border-radius:2px;border:1px solid}
 
@@ -95,30 +114,30 @@ main{padding:26px 0 70px}
   border:1px solid var(--rule);border-radius:var(--r);margin-top:18px;overflow:hidden}
 .stat{background:var(--card);padding:16px 18px}
 .stat .v{font-size:30px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
-.stat .l{font-size:13px;color:var(--ink2);margin-top:3px}
-.stat .n{font-size:12px;color:var(--ink3);margin-top:5px}
+.stat .l{font-size:14px;color:var(--ink2);margin-top:3px}
+.stat .n{font-size:13px;color:var(--ink3);margin-top:5px}
 .stat.alarm .v{color:var(--quiet)}
-.stat button{background:none;border:0;padding:0;color:var(--link);font-size:12.5px;cursor:pointer;text-decoration:underline;margin-top:5px}
+.stat button{background:none;border:0;padding:0;color:var(--link);font-size:13.5px;cursor:pointer;text-decoration:underline;margin-top:5px}
 
 /* panels + tables */
 .panel{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);margin-top:18px}
 .panel-hd{padding:14px 18px;border-bottom:1px solid var(--rule2);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .panel-hd h2{font-size:15px}
-.panel-hd p{margin:0;font-size:13px;color:var(--ink3)}
+.panel-hd p{margin:0;font-size:14px;color:var(--ink3)}
 .panel-hd .sp{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .tools{padding:12px 18px;border-bottom:1px solid var(--rule2);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .tools input[type=search],.tools select{
-  border:1px solid var(--rule);border-radius:var(--r);padding:6px 9px;font-size:13.5px;background:#fff}
+  border:1px solid var(--rule);border-radius:var(--r);padding:6px 9px;font-size:14.5px;background:#fff}
 .tools input[type=search]{min-width:210px}
-.selnote{font-size:13px;color:var(--ink2);margin-left:auto}
+.selnote{font-size:14px;color:var(--ink2);margin-left:auto}
 .tscroll{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:13.5px}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
 thead th{
-  font-family:"Archivo Narrow",Archivo,sans-serif;font-weight:600;font-size:13px;
+  font-weight:700;font-size:14px;
   text-align:left;color:var(--ink2);background:#F7F8F8;
   padding:9px 12px;border-bottom:1px solid var(--rule);white-space:nowrap;position:sticky;top:46px;z-index:5}
-thead th.sortable{cursor:pointer;user-select:none}
-thead th.sortable:hover{color:var(--ink)}
+thead th .sortable{cursor:pointer;user-select:none}
+thead th .sortable:hover{color:var(--ink)}
 thead th .ar{color:var(--ink3);font-size:10px;margin-left:3px}
 tbody td{padding:9px 12px;border-bottom:1px solid var(--rule2);vertical-align:middle}
 tbody tr:hover{background:#F8FAF9}
@@ -127,11 +146,11 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 td.name{font-weight:500;white-space:nowrap}
 td.sub{color:var(--ink2)}
 .chk{width:34px}
-.pill{display:inline-block;padding:1px 7px;border-radius:99px;font-size:12px;font-weight:500;white-space:nowrap}
+.pill{display:inline-block;padding:1px 7px;border-radius:99px;font-size:13px;font-weight:500;white-space:nowrap}
 .pill.met{background:var(--met-bg);color:var(--met)}
 .pill.watch{background:var(--watch-bg);color:var(--watch)}
 .pill.quiet{background:var(--quiet-bg);color:var(--quiet)}
-.tag{font-size:12px;color:var(--ink2);background:#F0F2F1;border:1px solid var(--rule2);border-radius:var(--r);padding:1px 6px;white-space:nowrap}
+.tag{font-size:13px;color:var(--ink2);background:#F0F2F1;border:1px solid var(--rule2);border-radius:var(--r);padding:1px 6px;white-space:nowrap}
 .minibar{display:inline-block;vertical-align:middle;width:56px;height:5px;background:var(--rule2);border-radius:99px;overflow:hidden;margin-left:8px}
 .minibar i{display:block;height:100%;background:var(--ink2)}
 .empty{padding:40px 18px;text-align:center;color:var(--ink2);font-size:14px}
@@ -150,29 +169,29 @@ td.sub{color:var(--ink2)}
 .modal footer{padding:14px 20px;border-top:1px solid var(--rule2);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .modal footer .sp{margin-left:auto;display:flex;gap:8px}
 .field{margin-bottom:14px}
-.field label{display:block;font-size:13px;color:var(--ink2);margin-bottom:5px}
+.field label{display:block;font-size:14px;color:var(--ink2);margin-bottom:5px}
 .field input[type=text],.field textarea{width:100%;border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;font-size:14px}
 .field textarea{min-height:150px;resize:vertical;line-height:1.5}
 .seg{display:inline-flex;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
-.seg button{background:#fff;border:0;padding:6px 14px;font-size:13.5px;cursor:pointer;color:var(--ink2)}
+.seg button{background:#fff;border:0;padding:6px 14px;font-size:14.5px;cursor:pointer;color:var(--ink2)}
 .seg button+button{border-left:1px solid var(--rule)}
 .seg button[aria-pressed="true"]{background:var(--ink);color:#fff;font-weight:500}
 .chips{display:flex;flex-wrap:wrap;gap:5px;max-height:104px;overflow:auto;
   border:1px solid var(--rule2);border-radius:var(--r);padding:8px;background:#FAFBFB}
-.chip{font-size:12.5px;background:#fff;border:1px solid var(--rule);border-radius:99px;padding:2px 8px;white-space:nowrap}
+.chip{font-size:13.5px;background:#fff;border:1px solid var(--rule);border-radius:99px;padding:2px 8px;white-space:nowrap}
 .chip.bad{border-color:#E0B6B0;background:var(--quiet-bg);color:var(--quiet)}
-.hint{font-size:12.5px;color:var(--ink3);margin:8px 0 0}
+.hint{font-size:13.5px;color:var(--ink3);margin:8px 0 0}
 
 /* meeting log view */
 .log{max-width:820px;margin:0 auto;padding:30px 24px 70px}
-.log .back{font-size:13.5px}
+.log .back{font-size:14.5px}
 .log h1{font-size:26px;margin:14px 0 4px;letter-spacing:-.02em}
 .log .meta{color:var(--ink2);font-size:14px;margin:0 0 20px}
 .log .entry{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);padding:14px 16px;margin-bottom:9px}
 .log .entry.miss{background:#F7F7F6;border-style:dashed;color:var(--ink2)}
 .log .entry h3{font-size:14.5px;display:flex;align-items:baseline;gap:9px}
-.log .entry h3 .wk{font-weight:400;color:var(--ink3);font-size:13px;margin-left:auto}
-.log .entry p{margin:6px 0 0;font-size:13.5px;color:var(--ink2)}
+.log .entry h3 .wk{font-weight:400;color:var(--ink3);font-size:14px;margin-left:auto}
+.log .entry p{margin:6px 0 0;font-size:14.5px;color:var(--ink2)}
 
 .note h3{font-size:14px;margin:0 0 6px}
 .note p{margin:0 0 12px;font-size:14px;color:var(--ink2);line-height:1.55;max-width:66ch}
@@ -181,10 +200,42 @@ td.sub{color:var(--ink2)}
 .note .say{background:var(--met-bg);border-left:3px solid var(--met);padding:11px 14px;border-radius:0 var(--r) var(--r) 0;
   font-size:14.5px;color:var(--ink);margin:0 0 16px}
 .note pre{background:#F4F6F5;border:1px solid var(--rule2);border-radius:var(--r);padding:11px 13px;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.5;
+  font-family:"Courier New",Courier,monospace;font-size:14px;line-height:1.5;
   overflow-x:auto;color:var(--ink2);margin:0 0 12px}
+/* GCG watermark: fixed, faint, behind everything */
+#watermark{position:fixed;right:26px;bottom:60px;z-index:0;pointer-events:none;
+  font-size:150px;line-height:1;font-weight:700;letter-spacing:-.05em;
+  color:var(--ink);opacity:.035;user-select:none}
+#app,#logview{position:relative;z-index:1}
+.credit{border-top:1px solid var(--rule);margin-top:34px;padding:16px 0 6px;
+  font-size:13.5px;color:var(--ink3);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.credit b{font-weight:700;color:var(--ink2)}
+.credit .sep{color:var(--rule)}
+
+/* metric explainers */
+.info{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;
+  margin-left:5px;border:1px solid var(--ink3);border-radius:50%;background:none;color:var(--ink3);
+  font-size:11px;font-weight:700;line-height:1;cursor:pointer;padding:0;vertical-align:middle;
+  font-family:"Times New Roman",Times,serif}
+.info:hover{border-color:var(--ink);color:var(--ink)}
+#tip{position:absolute;z-index:80;max-width:300px;background:var(--ink);color:#F1F3F2;
+  padding:10px 13px;border-radius:var(--r);font-size:14px;line-height:1.45;
+  box-shadow:0 8px 24px rgba(10,20,28,.3)}
+#tip[hidden]{display:none}
+#tip b{display:block;margin-bottom:3px;color:#fff}
+
+/* add-contact form */
+.form2{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+.form2 .full{grid-column:1 / -1}
+.form2 label{display:block;font-size:14px;color:var(--ink2);margin-bottom:4px}
+.form2 input,.form2 select{width:100%;border:1px solid var(--rule);border-radius:var(--r);
+  padding:7px 9px;font-size:15px;background:#fff;font-family:inherit}
+.form2 .err{border-color:var(--quiet)}
+.formnote{font-size:13.5px;color:var(--ink3);margin:14px 0 0;line-height:1.5}
+@media (max-width:620px){.form2{grid-template-columns:1fr}}
+
 #toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:#fff;
-  padding:10px 18px;border-radius:var(--r);font-size:13.5px;z-index:90;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  padding:10px 18px;border-radius:var(--r);font-size:14.5px;z-index:90;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 #toast[hidden]{display:none}
 .sronly{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
@@ -208,6 +259,7 @@ td.sub{color:var(--ink2)}
       </div>
       <div class="mast-right">
         <span class="yearchip" id="yearchip"></span>
+        <button class="btn ghost sm" id="btnAdd">Add people</button>
         <button class="btn ghost sm" id="btnImport">Import data</button>
         <button class="btn ghost sm" id="btnExportCsv">Export this tab (CSV)</button>
         <button class="btn ghost sm" id="btnExportJson">Export all (JSON)</button>
@@ -224,8 +276,16 @@ td.sub{color:var(--ink2)}
     <section class="view" id="view-leaders" hidden></section>
     <section class="view" id="view-disciples" hidden></section>
     <section class="view" id="view-available" hidden></section>
+
+    <div class="credit">
+      <span>Developed by <b>Ground Works Consulting Group</b></span>
+      <span class="sep">|</span>
+      <span><b>Brian Scalise, Ph.D.</b></span>
+    </div>
   </main>
 </div>
+<div id="watermark" aria-hidden="true">GCG</div>
+<div id="tip" hidden></div>
 
 <div id="logview" hidden></div>
 
@@ -279,6 +339,33 @@ td.sub{color:var(--ink2)}
       <div class="sp">
         <button class="btn" id="noteDismiss">Close</button>
         <button class="btn primary" id="noteAction"></button>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<div class="scrim" id="addScrim" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="addTitle">
+    <header>
+      <h2 id="addTitle">Add people</h2>
+      <button type="button" id="addClose" aria-label="Close">&times;</button>
+    </header>
+    <div class="body">
+      <div class="field">
+        <label>Who are you adding?</label>
+        <div class="seg" id="addKind">
+          <button type="button" data-kind="leader" aria-pressed="true">Leader or mentor</button>
+          <button type="button" data-kind="disciple" aria-pressed="false">Disciple</button>
+        </div>
+      </div>
+      <div class="form2" id="addForm"></div>
+      <p class="formnote" id="addNote"></p>
+    </div>
+    <footer>
+      <p class="hint" id="addHint" style="margin:0"></p>
+      <div class="sp">
+        <button class="btn" id="addAnother">Save and add another</button>
+        <button class="btn primary" id="addSave">Save</button>
       </div>
     </footer>
   </div>
@@ -381,7 +468,7 @@ function derive(){
       metThisWeek: metThisWeek,
       possibleToDate: possible,
       meetRate: possible ? ms.length / possible : 0,
-      yearPct: ms.length / weeks.length,
+      yearPace: elapsed.length ? ms.length / elapsed.length : 0,
       quiet: l.status === "active" && (!last || weeksSince === null || weeksSince >= QUIET_WEEKS)
     });
   });
@@ -399,11 +486,19 @@ function derive(){
     weekNo: elapsed.length, weekTotal: weeks.length,
     leaders: leaders, active: active, available: available, idx: idx,
     disciples: DATA.disciples.map(function(d){
-      var l = idx[d.leaderId] || {};
+      var l = idx[d.leaderId] || {}, ms = l.meetings || [];
+      var here = 0, missed = 0, lastHere = null;
+      ms.forEach(function(m){
+        if((m.present||[]).indexOf(d.id) >= 0){ here++; if(!lastHere || m.date > lastHere) lastHere = m.date; }
+        else if((m.absent||[]).indexOf(d.id) >= 0){ missed++; }
+      });
+      var held = here + missed;
       return Object.assign({}, d, {
         name: d.first + " " + d.last, leaderName: l.name || "Unassigned",
         lastMeeting: l.lastMeeting || null, weeksSince: l.weeksSince,
-        groupType: l.groupType || "", quiet: !!l.quiet
+        groupType: l.groupType || "", quiet: !!l.quiet,
+        attended: here, missedCount: missed, groupHeld: held,
+        attendRate: held ? here / held : 0, lastAttended: lastHere
       });
     }),
     possibleThisWeek: active.length,
@@ -415,6 +510,53 @@ function derive(){
     ytdHeld: ytdHeld, ytdPoss: ytdPoss
   };
   M.quietPct = active.length ? M.quietList.length / active.length : 0;
+}
+
+/* ---------- metric explainers ---------------------------------------
+   Every number on screen gets a plain-language definition. Anyone can
+   click the mark beside a heading and find out what it counts.      */
+var TIPS = {
+  meetrate: ["Meetings %",
+    "Meetings this leader reported, divided by the ministry weeks since their own start date. "
+  + "A leader who started late is not penalised for weeks before they began. Groups meet once per week, "
+  + "so 100% means they met and reported every week they have been running."],
+  yearpace: ["Year pace",
+    "Meetings reported, divided by the ministry weeks elapsed so far this year. This measures a leader "
+  + "against the calendar rather than against their own start date, so a late start shows up here as a "
+  + "lower number."],
+  total: ["Total times met",
+    "How many weekly meetings this leader has reported attendance for since the ministry year began."],
+  weeksq: ["Weeks since",
+    "Consecutive ministry weeks with no reported meeting. Weeks excluded from the ministry calendar, such as "
+  + "Thanksgiving and Christmas, are not counted against anyone."],
+  recent: ["Most recent meeting",
+    "The date of the last meeting with attendance reported. Opens that leader's full meeting log in a new tab."],
+  leaderstart: ["Leader start date",
+    "When this leader's group began. Everything in the Meetings % column is measured from this date forward."],
+  status: ["Status",
+    "Met this week means attendance is in. Awaiting report means the week is still open. Quiet means no "
+  + "meeting reported for three or more consecutive ministry weeks, which is the point where someone should "
+  + "reach out."],
+  attend: ["Attendance %",
+    "How often this disciple was marked present, out of the meetings their group actually held. A group can be "
+  + "meeting faithfully while one person quietly stops showing up, and this is the column that reveals it."],
+  dmissed: ["Missed",
+    "Meetings this disciple's group held where they were marked absent."],
+  weekbar: ["Meetings reported this week",
+    "Groups meet once per week, so the number of possible meetings equals the number of active leaders."],
+  ytd: ["Meetings held year to date",
+    "Every meeting reported so far, divided by every meeting that could have happened so far. This is the "
+  + "single number for whether discipleship is actually happening across the church."],
+  quietpct: ["Leaders quiet three or more weeks",
+    "The share of active leaders with no reported meeting for three consecutive ministry weeks. These are the "
+  + "people to call."],
+  yearweeks: ["Ministry year",
+    "Groups run the second week of August through December, then January through May. Weeks containing "
+  + "Thanksgiving, Christmas, New Year's Day or Easter are not counted, which is what sets the total."]
+};
+function tipMark(key){
+  return '<button class="info" type="button" data-tip="' + key + '" aria-label="What does '
+    + esc(TIPS[key][0]) + ' mean?">?</button>';
 }
 
 /* ---------- small helpers ------------------------------------------ */
@@ -476,61 +618,81 @@ function renderTabs(){
 
 /* ---------- overview ----------------------------------------------- */
 function renderOverview(){
-  var marks = M.active.map(function(l){
-    var cls = l.metThisWeek ? "met" : (l.quiet ? "quiet" : "none");
-    var title = l.name + " · " + (l.metThisWeek ? "met this week"
-      : (l.lastMeeting ? "last met " + fdate(l.lastMeeting.date) : "no meeting recorded"));
-    return '<button class="mark '+cls+'" data-leader="'+l.id+'" title="'+esc(title)+'" aria-label="'+esc(title)+'"></button>';
-  }).join("");
+  var met  = M.active.filter(function(l){ return l.metThisWeek; });
+  var quiet= M.quietList;
+  var open = M.active.filter(function(l){ return !l.metThisWeek && !l.quiet; });
+  var n = Math.max(1, M.active.length);
+  function w(x){ return (x.length / n * 100) + "%"; }
+
+  function group(cls, title, note, list, showWeeks){
+    return '<div class="grp ' + cls + '"><h3>' + esc(title) + '</h3><p>' + esc(note) + '</p><ul>'
+      + (list.length ? list.map(function(l){
+          return '<li><button data-leader="' + l.id + '">' + esc(l.name) + '</button>'
+            + (showWeeks ? '<span class="wk">' + l.weeksSince + ' wks</span>' : '') + '</li>';
+        }).join("") : '<li class="sub">Nobody</li>')
+      + '</ul></div>';
+  }
 
   el("view-overview").innerHTML =
   '<div class="week">'
   + '<div class="week-fig">'
-    + '<p class="k">Meetings reported, week of ' + fdate(M.thisWeek) + '</p>'
-    + '<div class="big">' + M.metThisWeek + '<span class="of"> / ' + M.possibleThisWeek + '</span></div>'
-    + '<div class="bar"><i style="width:' + (M.weekPct*100) + '%"></i></div>'
-    + '<p class="pct"><b>' + pct(M.weekPct) + '</b> of possible meetings have attendance in.</p>'
+    + '<p class="k">Week of ' + fdate(M.thisWeek) + '</p>'
+    + '<div class="big">' + met.length + '<span class="of"> / ' + M.active.length + '</span></div>'
+    + '<p class="pct">groups have reported meeting this week' + tipMark("weekbar") + '</p>'
+    + '<p class="pct" style="margin-top:14px"><b>' + pct(M.weekPct) + '</b> of possible meetings</p>'
   + '</div>'
   + '<div class="week-grid">'
-    + '<div class="hdr"><h2>Every active leader, one square</h2>'
-      + '<span class="sub">Week ' + M.weekNo + ' of ' + M.weekTotal + ' · pick a square to open that leader\'s log</span></div>'
-    + '<div class="marks">' + marks + '</div>'
-    + '<div class="legend">'
-      + '<span><i class="swatch" style="background:var(--met);border-color:var(--met)"></i> Attendance reported</span>'
-      + '<span><i class="swatch" style="background:#fff;border-color:#BFC8C5"></i> Nothing in yet</span>'
-      + '<span><i class="swatch" style="background:var(--quiet);border-color:var(--quiet)"></i> Quiet ' + QUIET_WEEKS + '+ weeks</span>'
+    + '<div class="hdr"><h2>Where the ' + M.active.length + ' groups stand right now</h2>'
+      + '<span class="sub">Week ' + M.weekNo + ' of ' + M.weekTotal + tipMark("yearweeks") + '</span></div>'
+    + '<div class="segbar">'
+      + '<i class="s-met" style="width:' + w(met) + '"></i>'
+      + '<i class="s-open" style="width:' + w(open) + '"></i>'
+      + '<i class="s-quiet" style="width:' + w(quiet) + '"></i>'
+    + '</div>'
+    + '<div class="seglabels">'
+      + '<div class="seglabel"><i class="sw" style="background:var(--met);border-color:var(--met)"></i>'
+        + '<div><div class="v">' + met.length + '</div><div class="t">met this week</div></div></div>'
+      + '<div class="seglabel"><i class="sw" style="background:#DDE3E1;border-color:#C7CFCC"></i>'
+        + '<div><div class="v">' + open.length + '</div><div class="t">no report in yet</div></div></div>'
+      + '<div class="seglabel"><i class="sw" style="background:var(--quiet);border-color:var(--quiet)"></i>'
+        + '<div><div class="v">' + quiet.length + '</div><div class="t">quiet ' + QUIET_WEEKS + '+ weeks</div></div></div>'
     + '</div>'
   + '</div></div>'
+
+  + '<div class="groups">'
+    + group("", "Met this week", "Attendance is in.", met, false)
+    + group("", "Waiting on a report", "The week is still open for these groups.", open, false)
+    + group("quiet", "Quiet " + QUIET_WEEKS + "+ weeks", "These are the people to call.", quiet, true)
+  + '</div>'
 
   + '<div class="stats">'
     + stat(M.active.length, "Active leaders", M.available.length + " more trained and available")
     + stat(M.disciples.length, "Disciples being met with",
-           (M.disciples.length / Math.max(1,M.active.length)).toFixed(1) + " per leader on average")
+           (M.disciples.length / n).toFixed(1) + " per leader on average")
     + stat(pct(M.ytdPct), "Meetings held year to date",
-           M.ytdHeld.toLocaleString() + " of " + M.ytdPoss.toLocaleString() + " possible so far")
+           M.ytdHeld.toLocaleString() + " of " + M.ytdPoss.toLocaleString() + " possible so far", false, "ytd")
     + stat(pct(M.quietPct), "Leaders quiet " + QUIET_WEEKS + "+ weeks",
-           M.quietList.length + " of " + M.active.length + " leaders", true)
+           quiet.length + " of " + M.active.length + " leaders", true, "quietpct")
   + '</div>'
 
   + '<div class="panel">'
-    + '<div class="panel-hd"><h2>No meeting reported in ' + QUIET_WEEKS + ' or more weeks</h2>'
-      + '<p>' + M.quietList.length + ' leaders · ' + M.quietList.reduce(function(s,l){return s+l.discipleCount;},0) + ' disciples affected</p>'
-      + '<div class="sp">'
-        + '<span class="selnote" id="quiet-note"></span>'
-        + '<button class="btn primary" id="quiet-msg" disabled>Message selected</button>'
-      + '</div></div>'
-    + (M.quietList.length ? '<div class="tscroll">' + table("quiet", quietCols(), M.quietList) + '</div>'
+    + '<div class="panel-hd"><h2>Reach out to the quiet groups</h2>'
+      + '<p>' + quiet.length + ' leaders &middot; '
+      + quiet.reduce(function(s,l){return s+l.discipleCount;},0) + ' disciples affected</p>'
+      + '<div class="sp"><span class="selnote" id="quiet-note"></span>'
+      + '<button class="btn primary" id="quiet-msg" disabled>Message selected</button></div></div>'
+    + (quiet.length ? '<div class="tscroll">' + table("quiet", quietCols(), quiet) + '</div>'
        : '<div class="empty"><b>Every leader has met inside the last ' + QUIET_WEEKS + ' weeks.</b>Nothing needs a nudge today.</div>')
   + '</div>';
 
-  wireTable("quiet", M.quietList, "quiet-note", "quiet-msg");
-  el("view-overview").querySelectorAll(".mark").forEach(function(b){
+  wireTable("quiet", quiet, "quiet-note", "quiet-msg");
+  el("view-overview").querySelectorAll("[data-leader]").forEach(function(b){
     b.addEventListener("click", function(){ openLog(b.dataset.leader); });
   });
 }
-function stat(v,l,n,alarm){
+function stat(v,l,n,alarm,tip){
   return '<div class="stat' + (alarm?' alarm':'') + '"><div class="v">' + esc(v) + '</div>'
-    + '<div class="l">' + esc(l) + '</div><div class="n">' + esc(n) + '</div></div>';
+    + '<div class="l">' + esc(l) + (tip?tipMark(tip):'') + '</div><div class="n">' + esc(n) + '</div></div>';
 }
 
 /* ---------- column definitions -------------------------------------
@@ -542,22 +704,22 @@ var COL = {
              h:function(l){
                var names = l.disciples.map(function(d){return d.name;});
                return '<td class="sub">'+esc(names.join(", ") || "—")+'</td>';}},
-  start:    {key:"start", label:"Start date", v:function(l){return l.startDate||"";},
+  start:    {key:"start", label:"Leader start date", tip:"leaderstart", v:function(l){return l.startDate||"";},
              h:function(l){return '<td class="n sub">'+fdate(l.startDate)+'</td>';}},
-  total:    {key:"total", label:"Total times met", v:function(l){return l.totalMet;},
+  total:    {key:"total", label:"Total times met", tip:"total", v:function(l){return l.totalMet;},
              h:function(l){return '<td class="n">'+l.totalMet+'</td>';}},
-  rate:     {key:"rate", label:"Meetings %", v:function(l){return l.meetRate;},
+  rate:     {key:"rate", label:"Meetings %", tip:"meetrate", v:function(l){return l.meetRate;},
              h:function(l){return '<td class="n">'+pct(l.meetRate)
                +'<span class="minibar"><i style="width:'+Math.min(100,l.meetRate*100)+'%"></i></span></td>';}},
   log:      {key:"log", label:"Meetings", v:function(l){return l.totalMet;},
              h:function(l){return '<td><a href="#log='+l.id+'" target="_blank" rel="noopener">All '+l.totalMet+'</a></td>';}},
-  recent:   {key:"recent", label:"Most recent meeting", v:function(l){return l.lastMeeting?l.lastMeeting.date:"";},
+  recent:   {key:"recent", label:"Most recent meeting", tip:"recent", v:function(l){return l.lastMeeting?l.lastMeeting.date:"";},
              h:function(l){return '<td class="n">'+(l.lastMeeting
                ? '<a href="#log='+l.id+'&m='+l.lastMeeting.id+'" target="_blank" rel="noopener">'+fdate(l.lastMeeting.date)+'</a>'
                : '<span class="sub">None</span>')+'</td>';}},
-  yearpct:  {key:"yearpct", label:"% complete in yr", v:function(l){return l.yearPct;},
-             h:function(l){return '<td class="n">'+pct(l.yearPct)+'</td>';}},
-  status:   {key:"status", label:"Status", v:function(l){return (l.quiet?0:(l.metThisWeek?2:1));},
+  yearpace: {key:"yearpace", label:"Year pace", tip:"yearpace", v:function(l){return l.yearPace;},
+             h:function(l){return '<td class="n">'+pct(l.yearPace)+'</td>';}},
+  status:   {key:"status", label:"Status", tip:"status", v:function(l){return (l.quiet?0:(l.metThisWeek?2:1));},
              h:function(l){return '<td>'+statusPill(l)+'</td>';}},
   campus:   {key:"campus", label:"Campus", v:function(l){return l.campus;},
              h:function(l){return '<td class="sub">'+esc(l.campus)+'</td>';}},
@@ -569,12 +731,21 @@ var COL = {
              h:function(l){return '<td class="sub">'+esc(l.email)+'</td>';}},
   phone:    {key:"phone", label:"Phone", v:function(l){return l.phone;},
              h:function(l){return '<td class="n sub">'+esc(l.phone)+'</td>';}},
-  weeksq:   {key:"weeksq", label:"Weeks since", v:function(l){return -(l.weeksSince==null?99:l.weeksSince);},
+  weeksq:   {key:"weeksq", label:"Weeks since", tip:"weeksq", v:function(l){return -(l.weeksSince==null?99:l.weeksSince);},
              h:function(l){return '<td class="n">'+(l.weeksSince==null?"—":l.weeksSince)+'</td>';}},
   dname:    {key:"name", label:"Disciple", v:function(d){return d.last+d.first;},
              h:function(d){return '<td class="name">'+esc(d.name)+'</td>';}},
   dleader:  {key:"leader", label:"Leader", v:function(d){return d.leaderName;},
              h:function(d){return '<td class="sub">'+esc(d.leaderName)+'</td>';}},
+  attend:   {key:"attend", label:"Attendance %", tip:"attend", v:function(d){return d.attendRate;},
+             h:function(d){return '<td class="n">'+(d.groupHeld
+               ? pct(d.attendRate)+'<span class="minibar"><i style="width:'+(d.attendRate*100)+'%"></i></span>'
+               : '<span class="sub">no meetings yet</span>')+'</td>';}},
+  dpresent: {key:"dpresent", label:"Present", v:function(d){return d.attended;},
+             h:function(d){return '<td class="n">'+d.attended+' of '+d.groupHeld+'</td>';}},
+  dmissed:  {key:"dmissed", label:"Missed", tip:"dmissed", v:function(d){return d.missedCount;},
+             h:function(d){return '<td class="n">'+(d.missedCount
+               ? '<span class="pill quiet">'+d.missedCount+'</span>' : '0')+'</td>';}},
   dstatus:  {key:"dstatus", label:"Group status", v:function(d){return d.quiet?0:1;},
              h:function(d){return '<td>'+(d.quiet
                ? '<span class="pill quiet">Group quiet</span>'
@@ -583,10 +754,10 @@ var COL = {
              h:function(l){return '<td class="n sub">'+fdate(l.trainedOn)+'</td>';}}
 };
 function cols(){ return Array.prototype.map.call(arguments, function(k){ return COL[k]; }); }
-function detailCols(){ return cols("leader","disciples","start","total","rate","log","recent","yearpct","status","campus","gtype"); }
+function detailCols(){ return cols("leader","disciples","start","total","rate","log","recent","yearpace","status","campus","gtype"); }
 function quietCols(){   return cols("leader","weeksq","recent","disciples","total","campus","gtype","email","phone"); }
 function leaderCols(){  return cols("leader","gender","campus","gtype","disciples","total","rate","recent","status","email","phone"); }
-function discipleCols(){return cols("dname","gender","dleader","campus","gtype","start","recent","dstatus","email","phone"); }
+function discipleCols(){return cols("dname","gender","dleader","attend","dpresent","dmissed","recent","dstatus","campus","gtype","email","phone"); }
 function availCols(){   return cols("leader","gender","campus","gtype","trained","email","phone"); }
 
 /* ---------- generic table ------------------------------------------ */
@@ -609,8 +780,9 @@ function table(tab, columns, rows){
   return '<table><thead><tr><th class="chk"><input type="checkbox" data-all="1" aria-label="Select all rows"></th>'
     + columns.map(function(c){
         var ar = s.key===c.key ? (s.dir===1?'&#9650;':'&#9660;') : '';
-        return '<th class="sortable'+((c.key==="total"||c.key==="rate"||c.key==="yearpct"||c.key==="weeksq")?" n":"")
-          +'" data-sort="'+c.key+'">'+esc(c.label)+'<span class="ar">'+ar+'</span></th>';
+        var isNum = ["total","rate","yearpace","weeksq","attend","dpresent","dmissed"].indexOf(c.key) >= 0;
+        return '<th class="'+(isNum?"n":"")+'"><span class="sortable" data-sort="'+c.key+'">'+esc(c.label)
+          +'<span class="ar">'+ar+'</span></span>'+(c.tip?tipMark(c.tip):'')+'</th>';
       }).join("")
     + '</tr></thead><tbody>' + body + '</tbody></table>';
 }
@@ -626,7 +798,7 @@ function wireTable(tab, rows, noteId, btnId){
       tr.classList.toggle("sel", sel.has(tr.dataset.id));
     });
   }
-  root.querySelectorAll('th[data-sort]').forEach(function(th){
+  root.querySelectorAll('[data-sort]').forEach(function(th){
     th.addEventListener("click", function(){
       var k = th.dataset.sort, cur = state.sort[tab];
       state.sort[tab] = (cur && cur.key===k) ? {key:k, dir:-cur.dir} : {key:k, dir:1};
@@ -888,7 +1060,7 @@ function renderLog(id, focusMeeting){
     + '<a class="back" href="#" onclick="location.hash=\'\';return false;">&larr; Back to dashboard</a>'
     + '<h1>'+esc(l.name)+'</h1>'
     + '<p class="meta">'+esc(l.groupType)+' · '+esc(l.campus)+' campus · started '+fdate(l.startDate)
-    + ' · '+l.totalMet+' meetings held · '+pct(l.meetRate)+' of possible · '+pct(l.yearPct)+' of the ministry year</p>'
+    + ' · '+l.totalMet+' meetings held · '+pct(l.meetRate)+' of possible · '+pct(l.yearPace)+' year pace</p>'
     + '<p class="meta">Disciples: '+esc(l.disciples.map(function(d){return d.name;}).join(", ") || "none assigned")+'</p>'
     + rows + '</div>';
 }
@@ -931,9 +1103,10 @@ function exportCsv(){
       l.disciples.map(function(d){return d.name;}).join("; "),l.totalMet,l.campus,l.groupType,l.email,l.phone]; });
   } else if(t==="disciples"){
     name="disciples";
-    header=["Id","Disciple","Gender","Leader","Campus","Group type","Start date","Email","Phone","Group quiet"];
-    rows=applyFilter(t,M.disciples).map(function(d){ return [d.id,d.name,gender(d.gender),d.leaderName,d.campus,
-      d.groupType,d.startDate,d.email,d.phone,d.quiet?"yes":"no"]; });
+    header=["Id","Disciple","Gender","Leader","Attendance %","Present","Group meetings","Missed","Campus","Group type","Start date","Email","Phone","Group quiet"];
+    rows=applyFilter(t,M.disciples).map(function(d){ return [d.id,d.name,gender(d.gender),d.leaderName,
+      pct(d.attendRate),d.attended,d.groupHeld,d.missedCount,d.campus,d.groupType,d.startDate,d.email,d.phone,
+      d.quiet?"yes":"no"]; });
   } else if(t==="available"){
     name="available-mentors";
     header=["Id","Name","Gender","Campus","Group type","Trained","Email","Phone"];
@@ -941,10 +1114,10 @@ function exportCsv(){
   } else {
     name = t==="details" ? "discipleship-detail" : "leaders";
     header=["Id","Leader","Gender","Disciples","Start date","Total times met","Possible to date","Meetings %",
-            "Most recent meeting","% complete in yr","Weeks since","Campus","Group type","Email","Phone"];
+            "Most recent meeting","Year pace","Weeks since","Campus","Group type","Email","Phone"];
     rows=applyFilter(t,M.active).map(function(l){ return [l.id,l.name,gender(l.gender),
       l.disciples.map(function(d){return d.name;}).join("; "),l.startDate,l.totalMet,l.possibleToDate,
-      pct(l.meetRate),l.lastMeeting?l.lastMeeting.date:"",pct(l.yearPct),l.weeksSince,l.campus,l.groupType,l.email,l.phone]; });
+      pct(l.meetRate),l.lastMeeting?l.lastMeeting.date:"",pct(l.yearPace),l.weeksSince,l.campus,l.groupType,l.email,l.phone]; });
   }
   download(name + "-" + DATA.meta.generated + ".csv", toCsv([header].concat(rows)), "text/csv;charset=utf-8");
   toast("Exported " + rows.length + " rows");
@@ -1003,11 +1176,134 @@ function importFile(file){
   r.readAsText(file);
 }
 
+/* ---- metric explainer popover -------------------------------------- */
+function showTip(btn){
+  var t = TIPS[btn.dataset.tip]; if(!t) return;
+  var tip = el("tip");
+  tip.innerHTML = '<b>' + esc(t[0]) + '</b>' + esc(t[1]);
+  tip.hidden = false;
+  var r = btn.getBoundingClientRect();
+  var left = r.left + window.scrollX - 8;
+  var maxL = window.scrollX + document.documentElement.clientWidth - tip.offsetWidth - 14;
+  tip.style.left = Math.max(window.scrollX + 10, Math.min(left, maxL)) + "px";
+  var top = r.bottom + window.scrollY + 8;
+  if(r.bottom + tip.offsetHeight + 20 > window.innerHeight)
+    top = r.top + window.scrollY - tip.offsetHeight - 8;
+  tip.style.top = top + "px";
+  showTip.open = btn;
+}
+function hideTip(){ el("tip").hidden = true; showTip.open = null; }
+
+/* ---- adding people -------------------------------------------------
+   The church database stays the system of record. This writes into the
+   copy held in memory so a new leader or disciple can be entered here
+   and the result exported for import upstream.                       */
+var addKind = "leader";
+function fieldsFor(kind){
+  var campuses = uniq(M.leaders, "campus");
+  if(!campuses.length) campuses = ["Central","Woodruff","Lake Cooley","East Asian","Espanol"];
+  var types = uniq(M.leaders, "groupType");
+  if(!types.length) types = ["Small Group","Discipleship Group","Equip"];
+  function sel(id, label, vals, cls){
+    return '<div class="' + (cls||"") + '"><label for="' + id + '">' + esc(label) + '</label>'
+      + '<select id="' + id + '">' + vals.map(function(v){
+          return '<option value="' + esc(v[0]) + '">' + esc(v[1]) + '</option>'; }).join("")
+      + '</select></div>';
+  }
+  function txt(id, label, ph, cls, type){
+    return '<div class="' + (cls||"") + '"><label for="' + id + '">' + esc(label) + '</label>'
+      + '<input type="' + (type||"text") + '" id="' + id + '" placeholder="' + esc(ph||"") + '"></div>';
+  }
+  var pair = function(v){ return [v,v]; };
+  var common = txt("f-first","First name","","")
+    + txt("f-last","Last name","","")
+    + sel("f-gender","Gender",[["M","Male"],["F","Female"]])
+    + txt("f-phone","Mobile number","(864) 555-0100","","tel")
+    + txt("f-email","Email address","name@example.org","full","email")
+    + sel("f-campus","Campus",campuses.map(pair))
+    + sel("f-gtype","Group type",types.map(pair));
+
+  if(kind === "leader"){
+    return common
+      + sel("f-status","Status",[["active","Active, leading a group now"],["available","Trained and available"]])
+      + txt("f-start","Group start date","","","date")
+      + txt("f-trained","Date trained (optional)","","","date");
+  }
+  var leaders = M.active.slice().sort(function(x,y){ return x.last < y.last ? -1 : 1; });
+  return common
+    + sel("f-leader","Assigned leader",
+        leaders.map(function(l){ return [l.id, l.name + " (" + gender(l.gender) + ", " + l.campus + ")"]; }), "full")
+    + txt("f-start","Start date with this leader","","","date");
+}
+function paintAdd(){
+  el("addKind").querySelectorAll("button").forEach(function(b){
+    b.setAttribute("aria-pressed", String(b.dataset.kind === addKind));
+  });
+  el("addForm").innerHTML = fieldsFor(addKind);
+  el("addNote").textContent = addKind === "leader"
+    ? "Campus and group type filter the roster. Status decides whether they appear under Current leaders or Available mentors."
+    : "Pairing is same-gender, so check the leader list against the gender selected above.";
+  el("addHint").textContent = "Saved here only. Export when you are done so the church database stays the record.";
+  var t = el("addForm").querySelector("#f-first"); if(t) t.focus();
+}
+function nextId(prefix, arr){
+  var max = 0;
+  arr.forEach(function(x){ var n = parseInt(String(x.id).replace(/\D/g,""),10); if(n > max) max = n; });
+  return prefix + String(max + 1).padStart(3,"0");
+}
+function saveAdd(again){
+  function v(id){ var e = el(id); return e ? e.value.trim() : ""; }
+  var first = v("f-first"), last = v("f-last");
+  [["f-first",first],["f-last",last]].forEach(function(p){
+    var e = el(p[0]); if(e) e.classList.toggle("err", !p[1]);
+  });
+  if(!first || !last){ toast("A first and last name are required."); return; }
+
+  if(addKind === "leader"){
+    DATA.leaders.push({
+      id: nextId("L", DATA.leaders), first: first, last: last, gender: v("f-gender"),
+      email: v("f-email"), phone: v("f-phone"), campus: v("f-campus"), groupType: v("f-gtype"),
+      status: v("f-status"), startDate: v("f-start") || M.thisWeek, trainedOn: v("f-trained")
+    });
+    toast("Added " + first + " " + last + " as a leader");
+  } else {
+    var l = M.idx[v("f-leader")];
+    DATA.disciples.push({
+      id: nextId("D", DATA.disciples), first: first, last: last, gender: v("f-gender"),
+      email: v("f-email"), phone: v("f-phone"), leaderId: v("f-leader"),
+      campus: v("f-campus"), startDate: v("f-start") || M.thisWeek
+    });
+    toast("Added " + first + " " + last + (l ? " with " + l.name : ""));
+  }
+  render();
+  if(again) paintAdd(); else el("addScrim").hidden = true;
+}
+
 /* ---------- wiring ---------------------------------------------------- */
 document.addEventListener("click", function(e){
   var t = e.target.closest("[data-tab]");
   if(t){ state.tab = t.dataset.tab; render(); }
 });
+el("btnAdd").addEventListener("click", function(){
+  el("addScrim").hidden = false; paintAdd();
+});
+el("addClose").addEventListener("click", function(){ el("addScrim").hidden = true; });
+el("addScrim").addEventListener("click", function(e){ if(e.target === this) el("addScrim").hidden = true; });
+el("addKind").addEventListener("click", function(e){
+  var b = e.target.closest("[data-kind]"); if(!b) return;
+  addKind = b.dataset.kind; paintAdd();
+});
+el("addSave").addEventListener("click", function(){ saveAdd(false); });
+el("addAnother").addEventListener("click", function(){ saveAdd(true); });
+
+document.addEventListener("click", function(e){
+  var b = e.target.closest(".info");
+  if(b){ e.stopPropagation(); (showTip.open === b) ? hideTip() : showTip(b); return; }
+  if(!e.target.closest("#tip")) hideTip();
+});
+window.addEventListener("resize", hideTip);
+window.addEventListener("scroll", hideTip, true);
+
 el("btnImport").addEventListener("click", function(){ el("fileInput").click(); });
 el("fileInput").addEventListener("change", function(){
   if(this.files[0]) importFile(this.files[0]); this.value = "";
@@ -1018,7 +1314,10 @@ el("msgClose").addEventListener("click", closeMessage);
 el("msgScrim").addEventListener("click", function(e){ if(e.target === this) closeMessage(); });
 document.addEventListener("keydown", function(e){
   if(e.key !== "Escape") return;
-  if(!el("noteScrim").hidden) closeNote(); else closeMessage();
+  if(!el("tip").hidden) hideTip();
+  else if(!el("noteScrim").hidden) closeNote();
+  else if(!el("addScrim").hidden) el("addScrim").hidden = true;
+  else closeMessage();
 });
 el("msgChannel").addEventListener("click", function(e){
   var b = e.target.closest("[data-ch]"); if(!b) return;
