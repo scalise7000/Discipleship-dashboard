@@ -2,18 +2,42 @@
 
 A static, single-file dashboard for tracking discipleship relationships across small groups, discipleship groups and Equip.
 
-**Everything is in `index.html`.** No build step, no dependencies, no server. Open it locally or drop it on GitHub Pages.
+**Everything is in `index.html`.** No build step, no dependencies, no server.
+
+Live at `https://discipleship-dashboard.scalise7000.workers.dev`, behind Cloudflare Access.
 
 ---
 
-## Deploying to GitHub Pages
+## How this is deployed
 
-1. Create a repository (public or private with Pages enabled).
-2. Commit `index.html` at the repo root.
-3. Settings → Pages → Source: "Deploy from a branch" → `main` / `/ (root)`.
-4. The dashboard is live at `https://<org>.github.io/<repo>/` in about a minute.
+GitHub holds the source. Cloudflare Workers serves it. Cloudflare Access guards the door.
 
-Commit `sample-attendance-import.csv` too if you want the import format handy in the repo.
+Push to `main` and Cloudflare rebuilds automatically. There is nothing to click after a commit.
+
+Three files make that work:
+
+| File | Job |
+|---|---|
+| `index.html` | The whole application |
+| `wrangler.jsonc` | Tells Workers which directory to serve, and disables preview URLs |
+| `.assetsignore` | Keeps repo internals such as `.git` from being published as public files |
+
+`.assetsignore` is not optional. Without it, Wrangler uploads the entire repository including its Git history, and every one of those files becomes publicly readable at the site's domain.
+
+Note that Cloudflare folded Pages into Workers for new projects during 2026. Older guides describing a Pages project with a "build output directory" no longer match the dashboard: that setting is now `assets.directory` in `wrangler.jsonc`.
+
+## Who can get in
+
+Two Access policies sit on the Worker, and they are OR'd:
+
+- **Cloudflare account members** — the account owner. This is the guaranteed way back in if the other policy is ever misconfigured.
+- **Church at The Mill staff** — any address ending in `@churchatthemill.com`, plus the owner's personal address.
+
+Sign-in is by one-time PIN: the person enters their email, Cloudflare sends a six-digit code, no password and no account needed. Session lasts 24 hours.
+
+Scope must be set to **All traffic**. The default, "Previews only", guards preview deployments and leaves the live site open. This setting has been observed to revert when you navigate away from the dialog mid-edit, so re-check it after any change.
+
+**Verify protection from outside.** A browser that already holds a session will show the site regardless of whether the policy works. Test on a phone with wifi off, or have someone else try.
 
 ---
 
