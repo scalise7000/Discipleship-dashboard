@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Discipleship Dashboard · Church at The Mill</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Narrow:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16222E; --ink2:#41525F; --ink3:#72828D;
+  --paper:#EDEFEE; --card:#FFFFFF; --rule:#D2D8D6; --rule2:#E4E8E7;
+  --met:#2F6B4F; --met-bg:#E4EEE8;
+  --watch:#9C7020; --watch-bg:#F5EDDD;
+  --quiet:#96342A; --quiet-bg:#F6E5E2;
+  --link:#1D4E5C;
+  --r:3px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:Archivo,"Helvetica Neue",Arial,sans-serif;
+  font-size:15px; line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0; font-weight:600; letter-spacing:-.011em}
+a{color:var(--link)}
+button,input,select,textarea{font:inherit; color:inherit}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+
+/* masthead */
+.masthead{background:var(--ink);color:#EDEFEE;padding:18px 0 16px}
+.masthead .wrap{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.brand h1{font-size:19px;color:#fff;line-height:1.2}
+.brand p{margin:2px 0 0;font-size:13px;color:#93A3AE}
+.mast-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.yearchip{font-size:13px;color:#A8B7C1;border:1px solid #33465A;border-radius:var(--r);padding:5px 10px}
+.btn{
+  background:var(--card);border:1px solid var(--rule);border-radius:var(--r);
+  padding:6px 12px;font-size:13.5px;font-weight:500;cursor:pointer;color:var(--ink);
+}
+.btn:hover{background:#F4F6F5}
+.btn:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,
+.mark:focus-visible{outline:2px solid #1D7A93;outline-offset:2px}
+.btn.primary{background:var(--link);border-color:var(--link);color:#fff}
+.btn.primary:hover{background:#17414D}
+.btn.primary:disabled{background:#9AAAB1;border-color:#9AAAB1;cursor:not-allowed}
+.btn.ghost{background:transparent;border-color:#3A4E60;color:#D6DEE3}
+.btn.ghost:hover{background:#22323F}
+.btn.sm{padding:4px 9px;font-size:12.5px}
+
+/* tabs */
+.tabbar{background:var(--card);border-bottom:1px solid var(--rule);position:sticky;top:0;z-index:20}
+.tabbar .wrap{display:flex;gap:2px;overflow-x:auto}
+.tab{
+  background:none;border:0;border-bottom:2px solid transparent;
+  padding:13px 14px;font-size:14px;font-weight:500;color:var(--ink2);cursor:pointer;white-space:nowrap;
+}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink);font-weight:600}
+.tab .cnt{color:var(--ink3);font-weight:400;margin-left:5px;font-variant-numeric:tabular-nums}
+
+main{padding:26px 0 70px}
+.view[hidden]{display:none}
+
+/* hero week panel */
+.week{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);
+  display:grid;grid-template-columns:270px 1fr;}
+.week-fig{padding:24px 26px;border-right:1px solid var(--rule2)}
+.week-fig .k{font-size:13px;color:var(--ink2);margin:0 0 10px}
+.week-fig .big{font-size:58px;line-height:.95;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.week-fig .of{font-size:22px;color:var(--ink3);font-weight:500}
+.week-fig .pct{margin:12px 0 0;font-size:15px;color:var(--ink2)}
+.week-fig .pct b{font-weight:600;color:var(--ink)}
+.bar{height:6px;background:var(--rule2);border-radius:99px;overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;background:var(--met)}
+.week-grid{padding:22px 26px}
+.week-grid .hdr{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
+.week-grid h2{font-size:14.5px}
+.week-grid .sub{font-size:13px;color:var(--ink3)}
+.marks{display:flex;flex-wrap:wrap;gap:5px}
+.mark{width:19px;height:19px;border-radius:2px;border:1px solid;padding:0;cursor:pointer;background:none;display:block}
+.mark.met{background:var(--met);border-color:var(--met)}
+.mark.none{background:#fff;border-color:#BFC8C5}
+.mark.quiet{background:var(--quiet);border-color:var(--quiet)}
+.legend{display:flex;gap:18px;margin-top:16px;font-size:12.5px;color:var(--ink2);flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:6px}
+.swatch{width:11px;height:11px;border-radius:2px;border:1px solid}
+
+/* stat row */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);
+  border:1px solid var(--rule);border-radius:var(--r);margin-top:18px;overflow:hidden}
+.stat{background:var(--card);padding:16px 18px}
+.stat .v{font-size:30px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat .l{font-size:13px;color:var(--ink2);margin-top:3px}
+.stat .n{font-size:12px;color:var(--ink3);margin-top:5px}
+.stat.alarm .v{color:var(--quiet)}
+.stat button{background:none;border:0;padding:0;color:var(--link);font-size:12.5px;cursor:pointer;text-decoration:underline;margin-top:5px}
+
+/* panels + tables */
+.panel{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);margin-top:18px}
+.panel-hd{padding:14px 18px;border-bottom:1px solid var(--rule2);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.panel-hd h2{font-size:15px}
+.panel-hd p{margin:0;font-size:13px;color:var(--ink3)}
+.panel-hd .sp{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tools{padding:12px 18px;border-bottom:1px solid var(--rule2);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tools input[type=search],.tools select{
+  border:1px solid var(--rule);border-radius:var(--r);padding:6px 9px;font-size:13.5px;background:#fff}
+.tools input[type=search]{min-width:210px}
+.selnote{font-size:13px;color:var(--ink2);margin-left:auto}
+.tscroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+thead th{
+  font-family:"Archivo Narrow",Archivo,sans-serif;font-weight:600;font-size:13px;
+  text-align:left;color:var(--ink2);background:#F7F8F8;
+  padding:9px 12px;border-bottom:1px solid var(--rule);white-space:nowrap;position:sticky;top:46px;z-index:5}
+thead th.sortable{cursor:pointer;user-select:none}
+thead th.sortable:hover{color:var(--ink)}
+thead th .ar{color:var(--ink3);font-size:10px;margin-left:3px}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--rule2);vertical-align:middle}
+tbody tr:hover{background:#F8FAF9}
+tbody tr.sel{background:#EAF1F3}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.name{font-weight:500;white-space:nowrap}
+td.sub{color:var(--ink2)}
+.chk{width:34px}
+.pill{display:inline-block;padding:1px 7px;border-radius:99px;font-size:12px;font-weight:500;white-space:nowrap}
+.pill.met{background:var(--met-bg);color:var(--met)}
+.pill.watch{background:var(--watch-bg);color:var(--watch)}
+.pill.quiet{background:var(--quiet-bg);color:var(--quiet)}
+.tag{font-size:12px;color:var(--ink2);background:#F0F2F1;border:1px solid var(--rule2);border-radius:var(--r);padding:1px 6px;white-space:nowrap}
+.minibar{display:inline-block;vertical-align:middle;width:56px;height:5px;background:var(--rule2);border-radius:99px;overflow:hidden;margin-left:8px}
+.minibar i{display:block;height:100%;background:var(--ink2)}
+.empty{padding:40px 18px;text-align:center;color:var(--ink2);font-size:14px}
+.empty b{display:block;font-size:15px;color:var(--ink);margin-bottom:4px}
+
+/* modal */
+.scrim{position:fixed;inset:0;background:rgba(18,28,36,.5);display:flex;align-items:center;
+  justify-content:center;padding:20px;z-index:60}
+.scrim[hidden]{display:none}
+.modal{background:var(--card);border-radius:var(--r);width:min(660px,100%);max-height:88vh;
+  display:flex;flex-direction:column;box-shadow:0 18px 50px rgba(10,20,28,.28)}
+.modal header{padding:16px 20px;border-bottom:1px solid var(--rule2);display:flex;align-items:center;gap:12px}
+.modal header h2{font-size:16px}
+.modal header button{margin-left:auto;background:none;border:0;font-size:22px;line-height:1;cursor:pointer;color:var(--ink2)}
+.modal .body{padding:18px 20px;overflow:auto}
+.modal footer{padding:14px 20px;border-top:1px solid var(--rule2);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.modal footer .sp{margin-left:auto;display:flex;gap:8px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;color:var(--ink2);margin-bottom:5px}
+.field input[type=text],.field textarea{width:100%;border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;font-size:14px}
+.field textarea{min-height:150px;resize:vertical;line-height:1.5}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+.seg button{background:#fff;border:0;padding:6px 14px;font-size:13.5px;cursor:pointer;color:var(--ink2)}
+.seg button+button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff;font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:5px;max-height:104px;overflow:auto;
+  border:1px solid var(--rule2);border-radius:var(--r);padding:8px;background:#FAFBFB}
+.chip{font-size:12.5px;background:#fff;border:1px solid var(--rule);border-radius:99px;padding:2px 8px;white-space:nowrap}
+.chip.bad{border-color:#E0B6B0;background:var(--quiet-bg);color:var(--quiet)}
+.hint{font-size:12.5px;color:var(--ink3);margin:8px 0 0}
+
+/* meeting log view */
+.log{max-width:820px;margin:0 auto;padding:30px 24px 70px}
+.log .back{font-size:13.5px}
+.log h1{font-size:26px;margin:14px 0 4px;letter-spacing:-.02em}
+.log .meta{color:var(--ink2);font-size:14px;margin:0 0 20px}
+.log .entry{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);padding:14px 16px;margin-bottom:9px}
+.log .entry.miss{background:#F7F7F6;border-style:dashed;color:var(--ink2)}
+.log .entry h3{font-size:14.5px;display:flex;align-items:baseline;gap:9px}
+.log .entry h3 .wk{font-weight:400;color:var(--ink3);font-size:13px;margin-left:auto}
+.log .entry p{margin:6px 0 0;font-size:13.5px;color:var(--ink2)}
+
+.note h3{font-size:14px;margin:0 0 6px}
+.note p{margin:0 0 12px;font-size:14px;color:var(--ink2);line-height:1.55;max-width:66ch}
+.note ol{margin:0 0 12px;padding-left:20px;font-size:14px;color:var(--ink2);line-height:1.55;max-width:66ch}
+.note li{margin-bottom:7px}
+.note .say{background:var(--met-bg);border-left:3px solid var(--met);padding:11px 14px;border-radius:0 var(--r) var(--r) 0;
+  font-size:14.5px;color:var(--ink);margin:0 0 16px}
+.note pre{background:#F4F6F5;border:1px solid var(--rule2);border-radius:var(--r);padding:11px 13px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.5;
+  overflow-x:auto;color:var(--ink2);margin:0 0 12px}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:#fff;
+  padding:10px 18px;border-radius:var(--r);font-size:13.5px;z-index:90;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+#toast[hidden]{display:none}
+.sronly{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+@media (max-width:860px){
+  .week{grid-template-columns:1fr}
+  .week-fig{border-right:0;border-bottom:1px solid var(--rule2)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  thead th{position:static}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <header class="masthead">
+    <div class="wrap">
+      <div class="brand">
+        <h1>Discipleship Dashboard</h1>
+        <p>Church at The Mill · Spartanburg County, SC</p>
+      </div>
+      <div class="mast-right">
+        <span class="yearchip" id="yearchip"></span>
+        <button class="btn ghost sm" id="btnImport">Import data</button>
+        <button class="btn ghost sm" id="btnExportCsv">Export this tab (CSV)</button>
+        <button class="btn ghost sm" id="btnExportJson">Export all (JSON)</button>
+        <input type="file" id="fileInput" accept=".json,.csv" hidden>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabbar"><div class="wrap" role="tablist" id="tabbar"></div></nav>
+
+  <main class="wrap">
+    <section class="view" id="view-overview"></section>
+    <section class="view" id="view-details" hidden></section>
+    <section class="view" id="view-leaders" hidden></section>
+    <section class="view" id="view-disciples" hidden></section>
+    <section class="view" id="view-available" hidden></section>
+  </main>
+</div>
+
+<div id="logview" hidden></div>
+
+<div class="scrim" id="msgScrim" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="msgTitle">
+    <header>
+      <h2 id="msgTitle">Message 0 people</h2>
+      <button type="button" id="msgClose" aria-label="Close">&times;</button>
+    </header>
+    <div class="body">
+      <div class="field">
+        <label>Send by</label>
+        <div class="seg" id="msgChannel">
+          <button type="button" data-ch="email" aria-pressed="true">Email</button>
+          <button type="button" data-ch="text" aria-pressed="false">Text</button>
+        </div>
+      </div>
+      <div class="field" id="recipWrap">
+        <label id="recipLabel">Recipients</label>
+        <div class="chips" id="msgChips"></div>
+        <p class="hint" id="recipMissing"></p>
+      </div>
+      <div class="field" id="subjField">
+        <label for="msgSubject">Subject</label>
+        <input type="text" id="msgSubject" placeholder="Checking in on your group">
+      </div>
+      <div class="field">
+        <label for="msgBody">Message</label>
+        <textarea id="msgBody"></textarea>
+      </div>
+    </div>
+    <footer>
+      <p class="hint" id="msgHint" style="margin:0"></p>
+      <div class="sp">
+        <button class="btn" id="msgCopy">Copy recipients</button>
+        <button class="btn primary" id="msgSend">Open in email app</button>
+      </div>
+    </footer>
+  </div>
+</div>
+
+
+<div class="scrim" id="noteScrim" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="noteTitle" style="width:min(600px,100%)">
+    <header>
+      <h2 id="noteTitle"></h2>
+      <button type="button" id="noteClose" aria-label="Close">&times;</button>
+    </header>
+    <div class="body" id="noteBody"></div>
+    <footer>
+      <div class="sp">
+        <button class="btn" id="noteDismiss">Close</button>
+        <button class="btn primary" id="noteAction"></button>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<div id="toast" hidden></div>
+
+<script>
+/* ------------------------------------------------------------------
+   Discipleship Dashboard — Church at The Mill
+   Static single-page app. No server, no build step, no stored state.
+   Data lives in the SEED object below and in memory after an import.
+   Swap SEED for a live TouchPoint feed later: see loadData().
+-------------------------------------------------------------------*/
+
+var SEED = {"meta":{"church":"Church at The Mill","ministryYear":"2026-2027","generated":"2026-09-14","source":"demo seed - 120+ fabricated records, not real people"},"weeks":[{"monday":"2026-08-10","term":"Fall"},{"monday":"2026-08-17","term":"Fall"},{"monday":"2026-08-24","term":"Fall"},{"monday":"2026-08-31","term":"Fall"},{"monday":"2026-09-07","term":"Fall"},{"monday":"2026-09-14","term":"Fall"},{"monday":"2026-09-21","term":"Fall"},{"monday":"2026-09-28","term":"Fall"},{"monday":"2026-10-05","term":"Fall"},{"monday":"2026-10-12","term":"Fall"},{"monday":"2026-10-19","term":"Fall"},{"monday":"2026-10-26","term":"Fall"},{"monday":"2026-11-02","term":"Fall"},{"monday":"2026-11-09","term":"Fall"},{"monday":"2026-11-16","term":"Fall"},{"monday":"2026-11-30","term":"Fall"},{"monday":"2026-12-07","term":"Fall"},{"monday":"2026-12-14","term":"Fall"},{"monday":"2027-01-04","term":"Spring"},{"monday":"2027-01-11","term":"Spring"},{"monday":"2027-01-18","term":"Spring"},{"monday":"2027-01-25","term":"Spring"},{"monday":"2027-02-01","term":"Spring"},{"monday":"2027-02-08","term":"Spring"},{"monday":"2027-02-15","term":"Spring"},{"monday":"2027-02-22","term":"Spring"},{"monday":"2027-03-01","term":"Spring"},{"monday":"2027-03-08","term":"Spring"},{"monday":"2027-03-15","term":"Spring"},{"monday":"2027-03-29","term":"Spring"},{"monday":"2027-04-05","term":"Spring"},{"monday":"2027-04-12","term":"Spring"},{"monday":"2027-04-19","term":"Spring"},{"monday":"2027-04-26","term":"Spring"},{"monday":"2027-05-03","term":"Spring"},{"monday":"2027-05-10","term":"Spring"},{"monday":"2027-05-17","term":"Spring"},{"monday":"2027-05-24","term":"Spring"}],"leaders":[{"id":"L001","first":"Christian","last":"Wofford","gender":"M","email":"cwofford@example.org","phone":"(864) 499-5456","campus":"Lake Cooley","groupType":"Small Group","status":"active","startDate":"2025-09-12","trainedOn":""},{"id":"L002","first":"Kayla","last":"Hansen","gender":"F","email":"khansen@example.org","phone":"(864) 736-8076","campus":"Central","groupType":"Equip","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L003","first":"Logan","last":"Wallace","gender":"M","email":"lwallace3@example.org","phone":"(864) 276-8995","campus":"Espanol","groupType":"Small Group","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L004","first":"Karen","last":"Shaw","gender":"F","email":"kshaw@example.org","phone":"(864) 359-8214","campus":"Lake Cooley","groupType":"Small Group","status":"active","startDate":"2026-08-10","trainedOn":""},{"id":"L005","first":"Jeffrey","last":"Bailey","gender":"M","email":"jbailey@example.org","phone":"(864) 592-7442","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L006","first":"Emma","last":"Ramirez","gender":"F","email":"eramirez6@example.org","phone":"(864) 795-4265","campus":"Central","groupType":"Equip","status":"active","startDate":"2025-08-12","trainedOn":""},{"id":"L007","first":"Harold","last":"Walker","gender":"M","email":"hwalker@example.org","phone":"(864) 606-1797","campus":"Lake Cooley","groupType":"Small Group","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L008","first":"Margaret","last":"Robinson","gender":"F","email":"mrobinson@example.org","phone":"(864) 360-9508","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L009","first":"Jeremy","last":"Kennedy","gender":"M","email":"jkennedy9@example.org","phone":"(864) 924-4601","campus":"Central","groupType":"Small Group","status":"active","startDate":"2025-09-09","trainedOn":""},{"id":"L010","first":"Judy","last":"Harrison","gender":"F","email":"jharrison@example.org","phone":"(864) 555-2934","campus":"Woodruff","groupType":"Small Group","status":"active","startDate":"2026-08-24","trainedOn":""},{"id":"L011","first":"Brian","last":"Carlson","gender":"M","email":"bcarlson@example.org","phone":"(864) 352-8130","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L012","first":"Alexis","last":"Gordon","gender":"F","email":"agordon12@example.org","phone":"(864) 766-3096","campus":"Woodruff","groupType":"Small Group","status":"active","startDate":"2026-08-24","trainedOn":""},{"id":"L013","first":"Walter","last":"Kelley","gender":"M","email":"wkelley@example.org","phone":"(864) 896-1852","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2024-08-26","trainedOn":""},{"id":"L014","first":"Sarah","last":"Cannon","gender":"F","email":"scannon@example.org","phone":"(864) 338-7138","campus":"Lake Cooley","groupType":"Equip","status":"active","startDate":"2026-08-24","trainedOn":""},{"id":"L015","first":"Timothy","last":"Patterson","gender":"M","email":"tpatterson15@example.org","phone":"(864) 468-4584","campus":"Central","groupType":"Small Group","status":"active","startDate":"2026-08-17","trainedOn":""},{"id":"L016","first":"Beverly","last":"Wilson","gender":"F","email":"bwilson@example.org","phone":"(864) 245-7367","campus":"Lake Cooley","groupType":"Small Group","status":"active","startDate":"2026-08-24","trainedOn":""},{"id":"L017","first":"Mark","last":"Porter","gender":"M","email":"mporter@example.org","phone":"(864) 962-5778","campus":"Woodruff","groupType":"Discipleship Group","status":"active","startDate":"2026-08-10","trainedOn":""},{"id":"L018","first":"Madison","last":"Lawson","gender":"F","email":"mlawson18@example.org","phone":"(864) 290-3432","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2026-08-10","trainedOn":""},{"id":"L019","first":"Jesse","last":"Schmidt","gender":"M","email":"jschmidt@example.org","phone":"(864) 708-1584","campus":"Espanol","groupType":"Discipleship Group","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L020","first":"Julia","last":"Patterson","gender":"F","email":"jpatterson@example.org","phone":"(864) 416-7511","campus":"East Asian","groupType":"Equip","status":"active","startDate":"2026-08-10","trainedOn":""},{"id":"L021","first":"Keith","last":"Hunter","gender":"M","email":"khunter21@example.org","phone":"(864) 383-2985","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2026-08-24","trainedOn":""},{"id":"L022","first":"Lisa","last":"Stevens","gender":"F","email":"lstevens@example.org","phone":"(864) 905-7144","campus":"Woodruff","groupType":"Equip","status":"active","startDate":"2025-09-09","trainedOn":""},{"id":"L023","first":"Ryan","last":"Davis","gender":"M","email":"rdavis@example.org","phone":"(864) 674-5623","campus":"Espanol","groupType":"Small Group","status":"active","startDate":"2026-08-17","trainedOn":""},{"id":"L024","first":"Debra","last":"Aguilar","gender":"F","email":"daguilar24@example.org","phone":"(864) 888-2679","campus":"Central","groupType":"Equip","status":"active","startDate":"2025-08-26","trainedOn":""},{"id":"L025","first":"Peter","last":"Andrews","gender":"M","email":"pandrews@example.org","phone":"(864) 649-3391","campus":"Central","groupType":"Small Group","status":"active","startDate":"2025-09-26","trainedOn":""},{"id":"L026","first":"Linda","last":"Larson","gender":"F","email":"llarson@example.org","phone":"(864) 280-6621","campus":"East Asian","groupType":"Small Group","status":"active","startDate":"2024-01-09","trainedOn":""},{"id":"L027","first":"Willie","last":"Hall","gender":"M","email":"whall27@example.org","phone":"(864) 727-5052","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2026-08-10","trainedOn":""},{"id":"L028","first":"Diana","last":"Ford","gender":"F","email":"dford@example.org","phone":"(864) 988-7046","campus":"Central","groupType":"Equip","status":"active","startDate":"2026-08-10","trainedOn":""},{"id":"L029","first":"Daniel","last":"Perry","gender":"M","email":"dperry@example.org","phone":"(864) 648-6724","campus":"Lake Cooley","groupType":"Small Group","status":"active","startDate":"2026-08-10","trainedOn":""},{"id":"L030","first":"Sharon","last":"Spencer","gender":"F","email":"sspencer30@example.org","phone":"(864) 627-8690","campus":"Central","groupType":"Small Group","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L031","first":"Kevin","last":"Hernandez","gender":"M","email":"khernandez@example.org","phone":"(864) 846-1750","campus":"Lake Cooley","groupType":"Discipleship Group","status":"active","startDate":"2026-08-24","trainedOn":""},{"id":"L032","first":"Jennifer","last":"Stone","gender":"F","email":"jstone@example.org","phone":"(864) 224-3925","campus":"Espanol","groupType":"Small Group","status":"active","startDate":"2026-08-10","trainedOn":""},{"id":"L033","first":"Elijah","last":"Wells","gender":"M","email":"ewells33@example.org","phone":"(864) 445-2175","campus":"Central","groupType":"Small Group","status":"active","startDate":"2024-09-26","trainedOn":""},{"id":"L034","first":"Joyce","last":"Stone","gender":"F","email":"jstone@example.org","phone":"(864) 596-3833","campus":"Central","groupType":"Small Group","status":"active","startDate":"2026-08-17","trainedOn":""},{"id":"L035","first":"Bruce","last":"Robertson","gender":"M","email":"brobertson@example.org","phone":"(864) 453-3678","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2024-09-09","trainedOn":""},{"id":"L036","first":"Olivia","last":"Collins","gender":"F","email":"ocollins36@example.org","phone":"(864) 435-2976","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2026-08-24","trainedOn":""},{"id":"L037","first":"Jason","last":"Hart","gender":"M","email":"jhart@example.org","phone":"(864) 261-9307","campus":"Woodruff","groupType":"Equip","status":"active","startDate":"2025-08-09","trainedOn":""},{"id":"L038","first":"Ruby","last":"Gilbert","gender":"F","email":"rgilbert@example.org","phone":"(864) 591-3649","campus":"Woodruff","groupType":"Small Group","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L039","first":"Alan","last":"Patterson","gender":"M","email":"apatterson39@example.org","phone":"(864) 571-1532","campus":"Central","groupType":"Small Group","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L040","first":"Donna","last":"Moreno","gender":"F","email":"dmoreno@example.org","phone":"(864) 838-6996","campus":"Central","groupType":"Small Group","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L041","first":"Larry","last":"Alvarez","gender":"M","email":"lalvarez@example.org","phone":"(864) 417-6788","campus":"Central","groupType":"Equip","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L042","first":"Isabella","last":"Hughes","gender":"F","email":"ihughes42@example.org","phone":"(864) 741-4872","campus":"East Asian","groupType":"Small Group","status":"active","startDate":"2026-08-24","trainedOn":""},{"id":"L043","first":"Micah","last":"Wood","gender":"M","email":"mwood@example.org","phone":"(864) 533-2704","campus":"East Asian","groupType":"Discipleship Group","status":"active","startDate":"2025-09-12","trainedOn":""},{"id":"L044","first":"Michelle","last":"Sanders","gender":"F","email":"msanders@example.org","phone":"(864) 870-1535","campus":"Espanol","groupType":"Equip","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L045","first":"Terry","last":"Edwards","gender":"M","email":"tedwards45@example.org","phone":"(864) 345-5223","campus":"Central","groupType":"Small Group","status":"active","startDate":"2026-08-17","trainedOn":""},{"id":"L046","first":"Brittany","last":"Stone","gender":"F","email":"bstone@example.org","phone":"(864) 585-1172","campus":"Lake Cooley","groupType":"Small Group","status":"active","startDate":"2025-01-12","trainedOn":""},{"id":"L047","first":"Jacob","last":"Flores","gender":"M","email":"jflores@example.org","phone":"(864) 871-5596","campus":"Woodruff","groupType":"Discipleship Group","status":"active","startDate":"2025-01-09","trainedOn":""},{"id":"L048","first":"Virginia","last":"Watson","gender":"F","email":"vwatson48@example.org","phone":"(864) 679-9849","campus":"Lake Cooley","groupType":"Small Group","status":"active","startDate":"2026-08-24","trainedOn":""},{"id":"L049","first":"Gregory","last":"Hicks","gender":"M","email":"ghicks@example.org","phone":"(864) 217-7809","campus":"Lake Cooley","groupType":"Small Group","status":"active","startDate":"2026-08-17","trainedOn":""},{"id":"L050","first":"Jean","last":"Patterson","gender":"F","email":"jpatterson@example.org","phone":"(864) 258-3271","campus":"Central","groupType":"Small Group","status":"active","startDate":"2026-08-24","trainedOn":""},{"id":"L051","first":"Brian","last":"Harrison","gender":"M","email":"bharrison51@example.org","phone":"(864) 757-3494","campus":"Woodruff","groupType":"Small Group","status":"active","startDate":"2026-08-17","trainedOn":""},{"id":"L052","first":"Frances","last":"Johnson","gender":"F","email":"fjohnson@example.org","phone":"(864) 207-2523","campus":"East Asian","groupType":"Discipleship Group","status":"active","startDate":"2026-08-24","trainedOn":""},{"id":"L053","first":"Logan","last":"Santos","gender":"M","email":"lsantos@example.org","phone":"(864) 536-7406","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2025-01-09","trainedOn":""},{"id":"L054","first":"Julie","last":"Brown","gender":"F","email":"jbrown54@example.org","phone":"(864) 346-1091","campus":"East Asian","groupType":"Small Group","status":"active","startDate":"2024-08-26","trainedOn":""},{"id":"L055","first":"James","last":"Stephens","gender":"M","email":"jstephens@example.org","phone":"(864) 920-8742","campus":"East Asian","groupType":"Small Group","status":"active","startDate":"2025-08-26","trainedOn":""},{"id":"L056","first":"Barbara","last":"Taylor","gender":"F","email":"btaylor@example.org","phone":"(864) 446-8285","campus":"Woodruff","groupType":"Discipleship Group","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L057","first":"Joshua","last":"Rodriguez","gender":"M","email":"jrodriguez57@example.org","phone":"(864) 419-6107","campus":"Woodruff","groupType":"Discipleship Group","status":"active","startDate":"2026-08-17","trainedOn":""},{"id":"L058","first":"Maria","last":"Parker","gender":"F","email":"mparker@example.org","phone":"(864) 476-6187","campus":"Central","groupType":"Small Group","status":"active","startDate":"2026-08-17","trainedOn":""},{"id":"L059","first":"Billy","last":"Freeman","gender":"M","email":"bfreeman@example.org","phone":"(864) 852-4095","campus":"Central","groupType":"Small Group","status":"active","startDate":"2026-08-24","trainedOn":""},{"id":"L060","first":"Christina","last":"Gomez","gender":"F","email":"cgomez60@example.org","phone":"(864) 878-5041","campus":"Woodruff","groupType":"Small Group","status":"active","startDate":"2025-01-19","trainedOn":""},{"id":"L061","first":"Alexander","last":"Brown","gender":"M","email":"abrown@example.org","phone":"(864) 769-5032","campus":"Espanol","groupType":"Equip","status":"active","startDate":"2026-08-17","trainedOn":""},{"id":"L062","first":"Helen","last":"Alexander","gender":"F","email":"halexander@example.org","phone":"(864) 238-4671","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2026-08-17","trainedOn":""},{"id":"L063","first":"Joseph","last":"Romero","gender":"M","email":"jromero63@example.org","phone":"(864) 548-3535","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2025-01-09","trainedOn":""},{"id":"L064","first":"Megan","last":"Wagner","gender":"F","email":"mwagner@example.org","phone":"(864) 502-2832","campus":"Woodruff","groupType":"Small Group","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L065","first":"Jerry","last":"Wood","gender":"M","email":"jwood@example.org","phone":"(864) 890-6412","campus":"Lake Cooley","groupType":"Discipleship Group","status":"active","startDate":"2026-08-24","trainedOn":""},{"id":"L066","first":"Cheryl","last":"Hunter","gender":"F","email":"chunter66@example.org","phone":"(864) 357-3029","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2024-01-09","trainedOn":""},{"id":"L067","first":"Henry","last":"Tolleson","gender":"M","email":"htolleson@example.org","phone":"(864) 647-1543","campus":"Espanol","groupType":"Discipleship Group","status":"active","startDate":"2026-08-17","trainedOn":""},{"id":"L068","first":"Anna","last":"Chavez","gender":"F","email":"achavez@example.org","phone":"(864) 587-1317","campus":"Lake Cooley","groupType":"Equip","status":"active","startDate":"2024-08-12","trainedOn":""},{"id":"L069","first":"Sean","last":"Fowler","gender":"M","email":"sfowler69@example.org","phone":"(864) 249-6852","campus":"Central","groupType":"Equip","status":"active","startDate":"2025-08-12","trainedOn":""},{"id":"L070","first":"Sarah","last":"Lane","gender":"F","email":"slane@example.org","phone":"(864) 489-5482","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2026-08-10","trainedOn":""},{"id":"L071","first":"Jacob","last":"Wagner","gender":"M","email":"jwagner@example.org","phone":"(864) 617-1802","campus":"Central","groupType":"Small Group","status":"active","startDate":"2026-08-17","trainedOn":""},{"id":"L072","first":"Madison","last":"Gonzales","gender":"F","email":"mgonzales72@example.org","phone":"(864) 877-6812","campus":"East Asian","groupType":"Small Group","status":"active","startDate":"2024-01-09","trainedOn":""},{"id":"L073","first":"Harold","last":"Owens","gender":"M","email":"howens@example.org","phone":"(864) 877-2926","campus":"Central","groupType":"Small Group","status":"active","startDate":"2026-08-31","trainedOn":""},{"id":"L074","first":"Sarah","last":"Castillo","gender":"F","email":"scastillo@example.org","phone":"(864) 467-3239","campus":"Central","groupType":"Equip","status":"active","startDate":"2024-09-09","trainedOn":""},{"id":"L075","first":"Walter","last":"Jefferson","gender":"M","email":"wjefferson75@example.org","phone":"(864) 273-9752","campus":"Central","groupType":"Discipleship Group","status":"active","startDate":"2024-08-26","trainedOn":""},{"id":"L076","first":"Joan","last":"Morris","gender":"F","email":"jmorris@example.org","phone":"(864) 488-5590","campus":"Woodruff","groupType":"Equip","status":"active","startDate":"2026-08-10","trainedOn":""},{"id":"L077","first":"Bryan","last":"Martin","gender":"M","email":"bmartin@example.org","phone":"(864) 471-1718","campus":"Lake Cooley","groupType":"Small Group","status":"available","startDate":"","trainedOn":"2025-10-11"},{"id":"L078","first":"Nicole","last":"Carlson","gender":"F","email":"ncarlson78@example.org","phone":"(864) 489-8982","campus":"Woodruff","groupType":"Small Group","status":"available","startDate":"","trainedOn":"2026-03-14"},{"id":"L079","first":"Terry","last":"Thompson","gender":"M","email":"tthompson@example.org","phone":"(864) 528-2951","campus":"Woodruff","groupType":"Discipleship Group","status":"available","startDate":"","trainedOn":"2026-05-09"},{"id":"L080","first":"Evelyn","last":"Ross","gender":"F","email":"eross@example.org","phone":"(864) 728-4250","campus":"Woodruff","groupType":"Small Group","status":"available","startDate":"","trainedOn":"2026-05-09"},{"id":"L081","first":"Thomas","last":"Wilson","gender":"M","email":"twilson81@example.org","phone":"(864) 912-1989","campus":"Woodruff","groupType":"Discipleship Group","status":"available","startDate":"","trainedOn":"2026-08-15"},{"id":"L082","first":"Ruth","last":"Bagwell","gender":"F","email":"rbagwell@example.org","phone":"(864) 452-9299","campus":"Central","groupType":"Small Group","status":"available","startDate":"","trainedOn":"2025-10-11"},{"id":"L083","first":"Gary","last":"Alvarez","gender":"M","email":"galvarez@example.org","phone":"(864) 974-2578","campus":"Central","groupType":"Small Group","status":"available","startDate":"","trainedOn":"2025-10-11"},{"id":"L084","first":"Theresa","last":"Simpson","gender":"F","email":"tsimpson84@example.org","phone":"(864) 375-1241","campus":"Central","groupType":"Small Group","status":"available","startDate":"","trainedOn":"2026-03-14"},{"id":"L085","first":"Sean","last":"Lopez","gender":"M","email":"slopez@example.org","phone":"(864) 741-8675","campus":"Central","groupType":"Small Group","status":"available","startDate":"","trainedOn":"2026-08-15"},{"id":"L086","first":"Christine","last":"Tolleson","gender":"F","email":"ctolleson@example.org","phone":"(864) 604-2802","campus":"Central","groupType":"Discipleship Group","status":"available","startDate":"","trainedOn":"2025-10-11"},{"id":"L087","first":"Bradley","last":"Marshall","gender":"M","email":"bmarshall87@example.org","phone":"(864) 963-6645","campus":"Central","groupType":"Small Group","status":"available","startDate":"","trainedOn":"2025-10-11"},{"id":"L088","first":"Diana","last":"Blackwell","gender":"F","email":"dblackwell@example.org","phone":"(864) 951-2095","campus":"Lake Cooley","groupType":"Equip","status":"available","startDate":"","trainedOn":"2025-10-11"},{"id":"L089","first":"Ethan","last":"Fowler","gender":"M","email":"efowler@example.org","phone":"(864) 227-4505","campus":"Central","groupType":"Small Group","status":"available","startDate":"","trainedOn":"2026-05-09"},{"id":"L090","first":"Donna","last":"Fox","gender":"F","email":"dfox90@example.org","phone":"(864) 982-3249","campus":"Espanol","groupType":"Small Group","status":"available","startDate":"","trainedOn":"2026-08-15"},{"id":"L091","first":"Jack","last":"Kennedy","gender":"M","email":"jkennedy@example.org","phone":"(864) 924-2854","campus":"Lake Cooley","groupType":"Small Group","status":"available","startDate":"","trainedOn":"2026-03-14"},{"id":"L092","first":"Diane","last":"Grant","gender":"F","email":"dgrant@example.org","phone":"(864) 772-8789","campus":"Central","groupType":"Discipleship Group","status":"available","startDate":"","trainedOn":"2025-10-11"},{"id":"L093","first":"Joseph","last":"Black","gender":"M","email":"jblack93@example.org","phone":"(864) 384-9784","campus":"Woodruff","groupType":"Small Group","status":"available","startDate":"","trainedOn":"2026-03-14"},{"id":"L094","first":"Catherine","last":"Sanchez","gender":"F","email":"csanchez@example.org","phone":"(864) 216-6641","campus":"Central","groupType":"Small Group","status":"available","startDate":"","trainedOn":"2025-10-11"}],"disciples":[{"id":"D001","first":"Justin","last":"Tran","gender":"M","email":"jtran@example.org","phone":"(864) 226-4014","leaderId":"L001","campus":"Lake Cooley","startDate":"2025-09-12"},{"id":"D002","first":"Brenda","last":"Stewart","gender":"F","email":"bstewart@example.org","phone":"(864) 250-6671","leaderId":"L002","campus":"Central","startDate":"2026-08-31"},{"id":"D003","first":"Michelle","last":"Weaver","gender":"F","email":"mweaver3@example.org","phone":"(864) 247-4554","leaderId":"L002","campus":"Central","startDate":"2026-08-31"},{"id":"D004","first":"Helen","last":"Ramirez","gender":"F","email":"hramirez@example.org","phone":"(864) 393-6172","leaderId":"L002","campus":"Central","startDate":"2026-08-31"},{"id":"D005","first":"Steven","last":"Mendez","gender":"M","email":"smendez@example.org","phone":"(864) 234-9495","leaderId":"L003","campus":"Espanol","startDate":"2026-08-31"},{"id":"D006","first":"Amanda","last":"Hunter","gender":"F","email":"ahunter6@example.org","phone":"(864) 709-3577","leaderId":"L004","campus":"Lake Cooley","startDate":"2026-08-10"},{"id":"D007","first":"Brenda","last":"Wood","gender":"F","email":"bwood@example.org","phone":"(864) 334-7181","leaderId":"L004","campus":"Lake Cooley","startDate":"2026-08-10"},{"id":"D008","first":"Tyler","last":"Sanchez","gender":"M","email":"tsanchez@example.org","phone":"(864) 861-3905","leaderId":"L005","campus":"Central","startDate":"2026-08-31"},{"id":"D009","first":"Dennis","last":"Sims","gender":"M","email":"dsims9@example.org","phone":"(864) 754-1068","leaderId":"L005","campus":"Central","startDate":"2026-08-31"},{"id":"D010","first":"Dennis","last":"Lane","gender":"M","email":"dlane@example.org","phone":"(864) 458-4148","leaderId":"L005","campus":"Central","startDate":"2026-08-31"},{"id":"D011","first":"Dorothy","last":"Ellis","gender":"F","email":"dellis@example.org","phone":"(864) 820-1599","leaderId":"L006","campus":"Central","startDate":"2025-08-12"},{"id":"D012","first":"Martha","last":"Price","gender":"F","email":"mprice12@example.org","phone":"(864) 395-8295","leaderId":"L006","campus":"Central","startDate":"2025-08-12"},{"id":"D013","first":"Robert","last":"Warren","gender":"M","email":"rwarren@example.org","phone":"(864) 555-3415","leaderId":"L007","campus":"Lake Cooley","startDate":"2026-08-31"},{"id":"D014","first":"Scott","last":"Hughes","gender":"M","email":"shughes@example.org","phone":"(864) 474-8918","leaderId":"L007","campus":"Lake Cooley","startDate":"2026-08-31"},{"id":"D015","first":"Bradley","last":"Bradley","gender":"M","email":"bbradley15@example.org","phone":"(864) 207-4441","leaderId":"L007","campus":"Lake Cooley","startDate":"2026-08-31"},{"id":"D016","first":"Priscilla","last":"Walker","gender":"F","email":"pwalker@example.org","phone":"(864) 323-9841","leaderId":"L008","campus":"Central","startDate":"2026-08-31"},{"id":"D017","first":"Austin","last":"Young","gender":"M","email":"ayoung@example.org","phone":"(864) 847-1715","leaderId":"L009","campus":"Central","startDate":"2025-09-09"},{"id":"D018","first":"Sandra","last":"Anderson","gender":"F","email":"sanderson18@example.org","phone":"(864) 850-9314","leaderId":"L010","campus":"Woodruff","startDate":"2026-08-24"},{"id":"D019","first":"Keith","last":"Myers","gender":"M","email":"kmyers@example.org","phone":"(864) 437-5014","leaderId":"L011","campus":"Central","startDate":"2026-08-31"},{"id":"D020","first":"Diane","last":"Warren","gender":"F","email":"dwarren@example.org","phone":"(864) 598-1075","leaderId":"L012","campus":"Woodruff","startDate":"2026-08-24"},{"id":"D021","first":"Dennis","last":"Hicks","gender":"M","email":"dhicks21@example.org","phone":"(864) 530-6173","leaderId":"L013","campus":"Central","startDate":"2024-08-26"},{"id":"D022","first":"Pamela","last":"Kennedy","gender":"F","email":"pkennedy@example.org","phone":"(864) 368-2396","leaderId":"L014","campus":"Lake Cooley","startDate":"2026-08-24"},{"id":"D023","first":"Alexander","last":"Burns","gender":"M","email":"aburns@example.org","phone":"(864) 515-5623","leaderId":"L015","campus":"Central","startDate":"2026-08-17"},{"id":"D024","first":"Roger","last":"Black","gender":"M","email":"rblack24@example.org","phone":"(864) 436-9433","leaderId":"L015","campus":"Central","startDate":"2026-08-17"},{"id":"D025","first":"Heather","last":"Silva","gender":"F","email":"hsilva@example.org","phone":"(864) 461-4282","leaderId":"L016","campus":"Lake Cooley","startDate":"2026-08-24"},{"id":"D026","first":"Heather","last":"Robertson","gender":"F","email":"hrobertson@example.org","phone":"(864) 521-4103","leaderId":"L016","campus":"Lake Cooley","startDate":"2026-08-24"},{"id":"D027","first":"Scott","last":"Bailey","gender":"M","email":"sbailey27@example.org","phone":"(864) 986-1217","leaderId":"L017","campus":"Woodruff","startDate":"2026-08-10"},{"id":"D028","first":"Julia","last":"Marshall","gender":"F","email":"jmarshall@example.org","phone":"(864) 558-2146","leaderId":"L018","campus":"Central","startDate":"2026-08-10"},{"id":"D029","first":"Naomi","last":"Bagwell","gender":"F","email":"nbagwell@example.org","phone":"(864) 889-6732","leaderId":"L018","campus":"Central","startDate":"2026-08-10"},{"id":"D030","first":"Janet","last":"Wofford","gender":"F","email":"jwofford30@example.org","phone":"(864) 263-6929","leaderId":"L018","campus":"Central","startDate":"2026-08-10"},{"id":"D031","first":"Adam","last":"Walker","gender":"M","email":"awalker@example.org","phone":"(864) 498-4931","leaderId":"L019","campus":"Espanol","startDate":"2026-08-31"},{"id":"D032","first":"Frank","last":"Ruiz","gender":"M","email":"fruiz@example.org","phone":"(864) 697-2895","leaderId":"L019","campus":"Espanol","startDate":"2026-08-31"},{"id":"D033","first":"Kelly","last":"Watson","gender":"F","email":"kwatson33@example.org","phone":"(864) 515-2167","leaderId":"L020","campus":"East Asian","startDate":"2026-08-10"},{"id":"D034","first":"Nathan","last":"Cruz","gender":"M","email":"ncruz@example.org","phone":"(864) 861-8962","leaderId":"L021","campus":"Central","startDate":"2026-08-24"},{"id":"D035","first":"Stephen","last":"Mills","gender":"M","email":"smills@example.org","phone":"(864) 672-4815","leaderId":"L021","campus":"Central","startDate":"2026-08-24"},{"id":"D036","first":"Jean","last":"Cannon","gender":"F","email":"jcannon36@example.org","phone":"(864) 224-6019","leaderId":"L022","campus":"Woodruff","startDate":"2025-09-09"},{"id":"D037","first":"Brandon","last":"Stephens","gender":"M","email":"bstephens@example.org","phone":"(864) 839-3158","leaderId":"L023","campus":"Espanol","startDate":"2026-08-17"},{"id":"D038","first":"Patrick","last":"Patterson","gender":"M","email":"ppatterson@example.org","phone":"(864) 328-9455","leaderId":"L023","campus":"Espanol","startDate":"2026-08-17"},{"id":"D039","first":"Keith","last":"Andrews","gender":"M","email":"kandrews39@example.org","phone":"(864) 414-2217","leaderId":"L023","campus":"Espanol","startDate":"2026-08-17"},{"id":"D040","first":"Adam","last":"Palmer","gender":"M","email":"apalmer@example.org","phone":"(864) 748-8328","leaderId":"L023","campus":"Espanol","startDate":"2026-08-17"},{"id":"D041","first":"Christine","last":"James","gender":"F","email":"cjames@example.org","phone":"(864) 730-2060","leaderId":"L024","campus":"Central","startDate":"2025-08-26"},{"id":"D042","first":"Gerald","last":"Anderson","gender":"M","email":"ganderson42@example.org","phone":"(864) 361-7458","leaderId":"L025","campus":"Central","startDate":"2025-09-26"},{"id":"D043","first":"Jose","last":"Baker","gender":"M","email":"jbaker@example.org","phone":"(864) 564-6801","leaderId":"L025","campus":"Central","startDate":"2025-09-26"},{"id":"D044","first":"Nicole","last":"Coleman","gender":"F","email":"ncoleman@example.org","phone":"(864) 761-3173","leaderId":"L026","campus":"East Asian","startDate":"2024-01-09"},{"id":"D045","first":"Zachary","last":"Wofford","gender":"M","email":"zwofford45@example.org","phone":"(864) 570-8131","leaderId":"L027","campus":"Central","startDate":"2026-08-10"},{"id":"D046","first":"Anna","last":"Torres","gender":"F","email":"atorres@example.org","phone":"(864) 734-2367","leaderId":"L028","campus":"Central","startDate":"2026-08-10"},{"id":"D047","first":"Joe","last":"Scott","gender":"M","email":"jscott@example.org","phone":"(864) 898-5145","leaderId":"L029","campus":"Lake Cooley","startDate":"2026-08-10"},{"id":"D048","first":"Teresa","last":"Vazquez","gender":"F","email":"tvazquez48@example.org","phone":"(864) 611-8003","leaderId":"L030","campus":"Central","startDate":"2026-08-31"},{"id":"D049","first":"Micah","last":"Peterson","gender":"M","email":"mpeterson@example.org","phone":"(864) 886-5520","leaderId":"L031","campus":"Lake Cooley","startDate":"2026-08-24"},{"id":"D050","first":"Keith","last":"Burke","gender":"M","email":"kburke@example.org","phone":"(864) 661-1560","leaderId":"L031","campus":"Lake Cooley","startDate":"2026-08-24"},{"id":"D051","first":"Shirley","last":"Cole","gender":"F","email":"scole51@example.org","phone":"(864) 282-4293","leaderId":"L032","campus":"Espanol","startDate":"2026-08-10"},{"id":"D052","first":"Matthew","last":"Jenkins","gender":"M","email":"mjenkins@example.org","phone":"(864) 508-4865","leaderId":"L033","campus":"Central","startDate":"2024-09-26"},{"id":"D053","first":"Richard","last":"Gramling","gender":"M","email":"rgramling@example.org","phone":"(864) 893-6133","leaderId":"L033","campus":"Central","startDate":"2024-09-26"},{"id":"D054","first":"Hannah","last":"Freeman","gender":"F","email":"hfreeman54@example.org","phone":"(864) 259-6535","leaderId":"L034","campus":"Central","startDate":"2026-08-17"},{"id":"D055","first":"Carol","last":"Wagner","gender":"F","email":"cwagner@example.org","phone":"(864) 619-3442","leaderId":"L034","campus":"Central","startDate":"2026-08-17"},{"id":"D056","first":"Kyle","last":"Fisher","gender":"M","email":"kfisher@example.org","phone":"(864) 264-2340","leaderId":"L035","campus":"Central","startDate":"2024-09-09"},{"id":"D057","first":"Alan","last":"Johnson","gender":"M","email":"ajohnson57@example.org","phone":"(864) 974-4798","leaderId":"L035","campus":"Central","startDate":"2024-09-09"},{"id":"D058","first":"Hannah","last":"Diaz","gender":"F","email":"hdiaz@example.org","phone":"(864) 725-6957","leaderId":"L036","campus":"Central","startDate":"2026-08-24"},{"id":"D059","first":"Ronald","last":"Bradley","gender":"M","email":"rbradley@example.org","phone":"(864) 498-5448","leaderId":"L037","campus":"Woodruff","startDate":"2025-08-09"},{"id":"D060","first":"Sophia","last":"Cox","gender":"F","email":"scox60@example.org","phone":"(864) 809-2282","leaderId":"L038","campus":"Woodruff","startDate":"2026-08-31"},{"id":"D061","first":"Margaret","last":"Scott","gender":"F","email":"mscott@example.org","phone":"(864) 426-7900","leaderId":"L038","campus":"Woodruff","startDate":"2026-08-31"},{"id":"D062","first":"Steven","last":"Carter","gender":"M","email":"scarter@example.org","phone":"(864) 264-1891","leaderId":"L039","campus":"Central","startDate":"2026-08-31"},{"id":"D063","first":"Richard","last":"Gutierrez","gender":"M","email":"rgutierrez63@example.org","phone":"(864) 689-9248","leaderId":"L039","campus":"Central","startDate":"2026-08-31"},{"id":"D064","first":"Marie","last":"Hernandez","gender":"F","email":"mhernandez@example.org","phone":"(864) 667-9945","leaderId":"L040","campus":"Central","startDate":"2026-08-31"},{"id":"D065","first":"Hannah","last":"Moore","gender":"F","email":"hmoore@example.org","phone":"(864) 914-3416","leaderId":"L040","campus":"Central","startDate":"2026-08-31"},{"id":"D066","first":"Austin","last":"Rogers","gender":"M","email":"arogers66@example.org","phone":"(864) 968-1655","leaderId":"L041","campus":"Central","startDate":"2026-08-31"},{"id":"D067","first":"Christian","last":"Morales","gender":"M","email":"cmorales@example.org","phone":"(864) 227-9249","leaderId":"L041","campus":"Central","startDate":"2026-08-31"},{"id":"D068","first":"Isaac","last":"Walker","gender":"M","email":"iwalker@example.org","phone":"(864) 550-7844","leaderId":"L041","campus":"Central","startDate":"2026-08-31"},{"id":"D069","first":"Christina","last":"Ruiz","gender":"F","email":"cruiz69@example.org","phone":"(864) 951-3222","leaderId":"L042","campus":"East Asian","startDate":"2026-08-24"},{"id":"D070","first":"Nicole","last":"Hamilton","gender":"F","email":"nhamilton@example.org","phone":"(864) 789-5600","leaderId":"L042","campus":"East Asian","startDate":"2026-08-24"},{"id":"D071","first":"Alexander","last":"Ruiz","gender":"M","email":"aruiz@example.org","phone":"(864) 807-4109","leaderId":"L043","campus":"East Asian","startDate":"2025-09-12"},{"id":"D072","first":"Brenda","last":"Young","gender":"F","email":"byoung72@example.org","phone":"(864) 347-3630","leaderId":"L044","campus":"Espanol","startDate":"2026-08-31"},{"id":"D073","first":"Joyce","last":"Vazquez","gender":"F","email":"jvazquez@example.org","phone":"(864) 898-2656","leaderId":"L044","campus":"Espanol","startDate":"2026-08-31"},{"id":"D074","first":"Richard","last":"Owens","gender":"M","email":"rowens@example.org","phone":"(864) 370-8298","leaderId":"L045","campus":"Central","startDate":"2026-08-17"},{"id":"D075","first":"Henry","last":"Barrett","gender":"M","email":"hbarrett75@example.org","phone":"(864) 761-5016","leaderId":"L045","campus":"Central","startDate":"2026-08-17"},{"id":"D076","first":"Logan","last":"Jones","gender":"M","email":"ljones@example.org","phone":"(864) 449-3413","leaderId":"L045","campus":"Central","startDate":"2026-08-17"},{"id":"D077","first":"Amanda","last":"Kelly","gender":"F","email":"akelly@example.org","phone":"(864) 583-1546","leaderId":"L046","campus":"Lake Cooley","startDate":"2025-01-12"},{"id":"D078","first":"Sharon","last":"Garza","gender":"F","email":"sgarza78@example.org","phone":"(864) 299-9828","leaderId":"L046","campus":"Lake Cooley","startDate":"2025-01-12"},{"id":"D079","first":"William","last":"Tucker","gender":"M","email":"wtucker@example.org","phone":"(864) 247-5554","leaderId":"L047","campus":"Woodruff","startDate":"2025-01-09"},{"id":"D080","first":"Elizabeth","last":"Kelley","gender":"F","email":"ekelley@example.org","phone":"(864) 349-6368","leaderId":"L048","campus":"Lake Cooley","startDate":"2026-08-24"},{"id":"D081","first":"Mason","last":"Black","gender":"M","email":"mblack81@example.org","phone":"(864) 913-9195","leaderId":"L049","campus":"Lake Cooley","startDate":"2026-08-17"},{"id":"D082","first":"Kyle","last":"Stewart","gender":"M","email":"kstewart@example.org","phone":"(864) 975-5209","leaderId":"L049","campus":"Lake Cooley","startDate":"2026-08-17"},{"id":"D083","first":"Vincent","last":"Cooper","gender":"M","email":"vcooper@example.org","phone":"(864) 715-9984","leaderId":"L049","campus":"Lake Cooley","startDate":"2026-08-17"},{"id":"D084","first":"Samantha","last":"Jimenez","gender":"F","email":"sjimenez84@example.org","phone":"(864) 826-8583","leaderId":"L050","campus":"Central","startDate":"2026-08-24"},{"id":"D085","first":"Jose","last":"Alvarez","gender":"M","email":"jalvarez@example.org","phone":"(864) 284-3167","leaderId":"L051","campus":"Woodruff","startDate":"2026-08-17"},{"id":"D086","first":"Austin","last":"Santos","gender":"M","email":"asantos@example.org","phone":"(864) 858-3269","leaderId":"L051","campus":"Woodruff","startDate":"2026-08-17"},{"id":"D087","first":"Samuel","last":"Alexander","gender":"M","email":"salexander87@example.org","phone":"(864) 579-2100","leaderId":"L051","campus":"Woodruff","startDate":"2026-08-17"},{"id":"D088","first":"Jack","last":"Hayes","gender":"M","email":"jhayes@example.org","phone":"(864) 650-8711","leaderId":"L051","campus":"Woodruff","startDate":"2026-08-17"},{"id":"D089","first":"Jessica","last":"Jimenez","gender":"F","email":"jjimenez@example.org","phone":"(864) 604-1645","leaderId":"L052","campus":"East Asian","startDate":"2026-08-24"},{"id":"D090","first":"Keith","last":"Shaw","gender":"M","email":"kshaw90@example.org","phone":"(864) 458-7373","leaderId":"L053","campus":"Central","startDate":"2025-01-09"},{"id":"D091","first":"Nathaniel","last":"Andrews","gender":"M","email":"nandrews@example.org","phone":"(864) 710-4364","leaderId":"L053","campus":"Central","startDate":"2025-01-09"},{"id":"D092","first":"Donna","last":"Walker","gender":"F","email":"dwalker@example.org","phone":"(864) 416-9957","leaderId":"L054","campus":"East Asian","startDate":"2024-08-26"},{"id":"D093","first":"Jesse","last":"Butler","gender":"M","email":"jbutler93@example.org","phone":"(864) 511-5709","leaderId":"L055","campus":"East Asian","startDate":"2025-08-26"},{"id":"D094","first":"Cynthia","last":"Washington","gender":"F","email":"cwashington@example.org","phone":"(864) 498-1293","leaderId":"L056","campus":"Woodruff","startDate":"2026-08-31"},{"id":"D095","first":"Pamela","last":"Stewart","gender":"F","email":"pstewart@example.org","phone":"(864) 919-8538","leaderId":"L056","campus":"Woodruff","startDate":"2026-08-31"},{"id":"D096","first":"Joyce","last":"Edwards","gender":"F","email":"jedwards96@example.org","phone":"(864) 255-7609","leaderId":"L056","campus":"Woodruff","startDate":"2026-08-31"},{"id":"D097","first":"Juan","last":"Ellis","gender":"M","email":"jellis@example.org","phone":"(864) 323-5184","leaderId":"L057","campus":"Woodruff","startDate":"2026-08-17"},{"id":"D098","first":"Hannah","last":"Arnold","gender":"F","email":"harnold@example.org","phone":"(864) 676-3406","leaderId":"L058","campus":"Central","startDate":"2026-08-17"},{"id":"D099","first":"Dennis","last":"Ford","gender":"M","email":"dford99@example.org","phone":"(864) 876-3256","leaderId":"L059","campus":"Central","startDate":"2026-08-24"},{"id":"D100","first":"Michael","last":"Flores","gender":"M","email":"mflores@example.org","phone":"(864) 536-1759","leaderId":"L059","campus":"Central","startDate":"2026-08-24"},{"id":"D101","first":"Roy","last":"Elliott","gender":"M","email":"relliott@example.org","phone":"(864) 886-8623","leaderId":"L059","campus":"Central","startDate":"2026-08-24"},{"id":"D102","first":"Jacqueline","last":"Fowler","gender":"F","email":"jfowler102@example.org","phone":"(864) 256-2199","leaderId":"L060","campus":"Woodruff","startDate":"2025-01-19"},{"id":"D103","first":"Jose","last":"Ward","gender":"M","email":"jward@example.org","phone":"(864) 816-8506","leaderId":"L061","campus":"Espanol","startDate":"2026-08-17"},{"id":"D104","first":"Theresa","last":"Price","gender":"F","email":"tprice@example.org","phone":"(864) 575-5201","leaderId":"L062","campus":"Central","startDate":"2026-08-17"},{"id":"D105","first":"Bryan","last":"Duncan","gender":"M","email":"bduncan105@example.org","phone":"(864) 322-9390","leaderId":"L063","campus":"Central","startDate":"2025-01-09"},{"id":"D106","first":"Brittany","last":"Phillips","gender":"F","email":"bphillips@example.org","phone":"(864) 413-6412","leaderId":"L064","campus":"Woodruff","startDate":"2026-08-31"},{"id":"D107","first":"Elijah","last":"Richardson","gender":"M","email":"erichardson@example.org","phone":"(864) 611-8242","leaderId":"L065","campus":"Lake Cooley","startDate":"2026-08-24"},{"id":"D108","first":"Amy","last":"Hayes","gender":"F","email":"ahayes108@example.org","phone":"(864) 651-4569","leaderId":"L066","campus":"Central","startDate":"2024-01-09"},{"id":"D109","first":"Nancy","last":"Martin","gender":"F","email":"nmartin@example.org","phone":"(864) 864-1016","leaderId":"L066","campus":"Central","startDate":"2024-01-09"},{"id":"D110","first":"Victoria","last":"Rice","gender":"F","email":"vrice@example.org","phone":"(864) 951-3165","leaderId":"L066","campus":"Central","startDate":"2024-01-09"},{"id":"D111","first":"Andrea","last":"Peterson","gender":"F","email":"apeterson111@example.org","phone":"(864) 280-4133","leaderId":"L066","campus":"Central","startDate":"2024-01-09"},{"id":"D112","first":"Anthony","last":"Lee","gender":"M","email":"alee@example.org","phone":"(864) 715-4872","leaderId":"L067","campus":"Espanol","startDate":"2026-08-17"},{"id":"D113","first":"Julia","last":"Sanders","gender":"F","email":"jsanders@example.org","phone":"(864) 228-8891","leaderId":"L068","campus":"Lake Cooley","startDate":"2024-08-12"},{"id":"D114","first":"Vincent","last":"Castillo","gender":"M","email":"vcastillo114@example.org","phone":"(864) 699-8393","leaderId":"L069","campus":"Central","startDate":"2025-08-12"},{"id":"D115","first":"Christina","last":"Garza","gender":"F","email":"cgarza@example.org","phone":"(864) 738-8767","leaderId":"L070","campus":"Central","startDate":"2026-08-10"},{"id":"D116","first":"Sara","last":"Ortiz","gender":"F","email":"sortiz@example.org","phone":"(864) 688-3135","leaderId":"L070","campus":"Central","startDate":"2026-08-10"},{"id":"D117","first":"Nancy","last":"Cole","gender":"F","email":"ncole117@example.org","phone":"(864) 666-7425","leaderId":"L070","campus":"Central","startDate":"2026-08-10"},{"id":"D118","first":"Samuel","last":"Ortiz","gender":"M","email":"sortiz@example.org","phone":"(864) 939-2052","leaderId":"L071","campus":"Central","startDate":"2026-08-17"},{"id":"D119","first":"Jack","last":"Stewart","gender":"M","email":"jstewart@example.org","phone":"(864) 710-4492","leaderId":"L071","campus":"Central","startDate":"2026-08-17"},{"id":"D120","first":"Emily","last":"Bryant","gender":"F","email":"ebryant120@example.org","phone":"(864) 271-2771","leaderId":"L072","campus":"East Asian","startDate":"2024-01-09"},{"id":"D121","first":"Russell","last":"Weaver","gender":"M","email":"rweaver@example.org","phone":"(864) 577-7478","leaderId":"L073","campus":"Central","startDate":"2026-08-31"},{"id":"D122","first":"Doris","last":"Rose","gender":"F","email":"drose@example.org","phone":"(864) 228-1333","leaderId":"L074","campus":"Central","startDate":"2024-09-09"},{"id":"D123","first":"Peter","last":"James","gender":"M","email":"pjames123@example.org","phone":"(864) 964-4147","leaderId":"L075","campus":"Central","startDate":"2024-08-26"},{"id":"D124","first":"Olivia","last":"Davis","gender":"F","email":"odavis@example.org","phone":"(864) 907-1619","leaderId":"L076","campus":"Woodruff","startDate":"2026-08-10"},{"id":"D125","first":"Susan","last":"Wofford","gender":"F","email":"swofford@example.org","phone":"(864) 969-3135","leaderId":"L076","campus":"Woodruff","startDate":"2026-08-10"}],"meetings":[{"id":"M0001","leaderId":"L001","week":"2026-08-10","date":"2026-08-12","present":["D001"],"absent":[],"note":""},{"id":"M0002","leaderId":"L001","week":"2026-08-17","date":"2026-08-19","present":["D001"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0003","leaderId":"L001","week":"2026-08-24","date":"2026-08-26","present":["D001"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0004","leaderId":"L001","week":"2026-08-31","date":"2026-09-01","present":["D001"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0005","leaderId":"L001","week":"2026-09-07","date":"2026-09-09","present":["D001"],"absent":[],"note":""},{"id":"M0006","leaderId":"L001","week":"2026-09-14","date":"2026-09-20","present":["D001"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0007","leaderId":"L002","week":"2026-09-07","date":"2026-09-08","present":["D002","D003"],"absent":["D004"],"note":"Met over breakfast."},{"id":"M0008","leaderId":"L002","week":"2026-09-14","date":"2026-09-15","present":["D002","D003","D004"],"absent":[],"note":""},{"id":"M0009","leaderId":"L004","week":"2026-08-10","date":"2026-08-13","present":["D007"],"absent":["D006"],"note":"Covered CAMP step 2."},{"id":"M0010","leaderId":"L004","week":"2026-08-17","date":"2026-08-20","present":["D006","D007"],"absent":[],"note":"Met over breakfast."},{"id":"M0011","leaderId":"L004","week":"2026-08-24","date":"2026-08-30","present":["D006","D007"],"absent":[],"note":"Met over breakfast."},{"id":"M0012","leaderId":"L004","week":"2026-08-31","date":"2026-09-02","present":["D006","D007"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0013","leaderId":"L004","week":"2026-09-07","date":"2026-09-09","present":["D006","D007"],"absent":[],"note":"Met over breakfast."},{"id":"M0014","leaderId":"L004","week":"2026-09-14","date":"2026-09-15","present":["D006","D007"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0015","leaderId":"L005","week":"2026-08-31","date":"2026-09-03","present":["D008","D009","D010"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0016","leaderId":"L005","week":"2026-09-07","date":"2026-09-10","present":["D008","D009","D010"],"absent":[],"note":"Met over breakfast."},{"id":"M0017","leaderId":"L005","week":"2026-09-14","date":"2026-09-16","present":["D008","D009"],"absent":["D010"],"note":"Worked through Luke 9."},{"id":"M0018","leaderId":"L006","week":"2026-08-10","date":"2026-08-11","present":["D011","D012"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0019","leaderId":"L006","week":"2026-08-17","date":"2026-08-23","present":["D011"],"absent":["D012"],"note":""},{"id":"M0020","leaderId":"L006","week":"2026-08-24","date":"2026-08-26","present":["D011","D012"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0021","leaderId":"L006","week":"2026-08-31","date":"2026-09-03","present":["D012"],"absent":["D011"],"note":""},{"id":"M0022","leaderId":"L006","week":"2026-09-07","date":"2026-09-09","present":["D011","D012"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0023","leaderId":"L006","week":"2026-09-14","date":"2026-09-16","present":["D011","D012"],"absent":[],"note":"Met over breakfast."},{"id":"M0024","leaderId":"L008","week":"2026-08-31","date":"2026-09-02","present":["D016"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0025","leaderId":"L008","week":"2026-09-07","date":"2026-09-09","present":["D016"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0026","leaderId":"L009","week":"2026-08-10","date":"2026-08-16","present":["D017"],"absent":[],"note":"Met over breakfast."},{"id":"M0027","leaderId":"L009","week":"2026-08-17","date":"2026-08-19","present":["D017"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0028","leaderId":"L009","week":"2026-08-24","date":"2026-08-26","present":["D017"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0029","leaderId":"L009","week":"2026-08-31","date":"2026-09-01","present":["D017"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0030","leaderId":"L009","week":"2026-09-07","date":"2026-09-10","present":["D017"],"absent":[],"note":"Met over breakfast."},{"id":"M0031","leaderId":"L009","week":"2026-09-14","date":"2026-09-17","present":["D017"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0032","leaderId":"L010","week":"2026-08-31","date":"2026-09-06","present":["D018"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0033","leaderId":"L010","week":"2026-09-07","date":"2026-09-09","present":["D018"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0034","leaderId":"L010","week":"2026-09-14","date":"2026-09-20","present":["D018"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0035","leaderId":"L014","week":"2026-08-24","date":"2026-08-30","present":["D022"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0036","leaderId":"L014","week":"2026-08-31","date":"2026-09-06","present":["D022"],"absent":[],"note":"Met over breakfast."},{"id":"M0037","leaderId":"L014","week":"2026-09-07","date":"2026-09-13","present":["D022"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0038","leaderId":"L014","week":"2026-09-14","date":"2026-09-17","present":["D022"],"absent":[],"note":"Met over breakfast."},{"id":"M0039","leaderId":"L015","week":"2026-08-17","date":"2026-08-20","present":["D023","D024"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0040","leaderId":"L015","week":"2026-08-24","date":"2026-08-25","present":["D023","D024"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0041","leaderId":"L015","week":"2026-08-31","date":"2026-09-06","present":["D023"],"absent":["D024"],"note":"Worked through Luke 9."},{"id":"M0042","leaderId":"L015","week":"2026-09-07","date":"2026-09-08","present":["D024"],"absent":["D023"],"note":"Worked through Luke 9."},{"id":"M0043","leaderId":"L015","week":"2026-09-14","date":"2026-09-15","present":["D023"],"absent":["D024"],"note":"Short week, quick check-in."},{"id":"M0044","leaderId":"L016","week":"2026-08-24","date":"2026-08-27","present":["D025","D026"],"absent":[],"note":"Met over breakfast."},{"id":"M0045","leaderId":"L016","week":"2026-08-31","date":"2026-09-01","present":["D026"],"absent":["D025"],"note":""},{"id":"M0046","leaderId":"L016","week":"2026-09-07","date":"2026-09-13","present":["D025","D026"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0047","leaderId":"L016","week":"2026-09-14","date":"2026-09-16","present":["D025","D026"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0048","leaderId":"L018","week":"2026-08-10","date":"2026-08-13","present":["D028","D029","D030"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0049","leaderId":"L018","week":"2026-08-17","date":"2026-08-18","present":["D028","D029","D030"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0050","leaderId":"L018","week":"2026-08-24","date":"2026-08-26","present":["D028","D029","D030"],"absent":[],"note":""},{"id":"M0051","leaderId":"L018","week":"2026-08-31","date":"2026-09-02","present":["D028"],"absent":["D029","D030"],"note":"Covered CAMP step 2."},{"id":"M0052","leaderId":"L018","week":"2026-09-07","date":"2026-09-08","present":["D028","D029","D030"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0053","leaderId":"L018","week":"2026-09-14","date":"2026-09-20","present":["D028","D029","D030"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0054","leaderId":"L019","week":"2026-08-31","date":"2026-09-06","present":["D031","D032"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0055","leaderId":"L019","week":"2026-09-07","date":"2026-09-10","present":["D031"],"absent":["D032"],"note":"Met over breakfast."},{"id":"M0056","leaderId":"L019","week":"2026-09-14","date":"2026-09-16","present":["D031","D032"],"absent":[],"note":"Met over breakfast."},{"id":"M0057","leaderId":"L020","week":"2026-08-10","date":"2026-08-11","present":["D033"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0058","leaderId":"L020","week":"2026-08-24","date":"2026-08-26","present":["D033"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0059","leaderId":"L020","week":"2026-08-31","date":"2026-09-02","present":["D033"],"absent":[],"note":"Met over breakfast."},{"id":"M0060","leaderId":"L020","week":"2026-09-07","date":"2026-09-09","present":["D033"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0061","leaderId":"L020","week":"2026-09-14","date":"2026-09-16","present":["D033"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0062","leaderId":"L021","week":"2026-08-24","date":"2026-08-26","present":["D034","D035"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0063","leaderId":"L021","week":"2026-08-31","date":"2026-09-02","present":["D034","D035"],"absent":[],"note":"Met over breakfast."},{"id":"M0064","leaderId":"L021","week":"2026-09-07","date":"2026-09-13","present":["D035"],"absent":["D034"],"note":"Short week, quick check-in."},{"id":"M0065","leaderId":"L021","week":"2026-09-14","date":"2026-09-16","present":["D034","D035"],"absent":[],"note":"Met over breakfast."},{"id":"M0066","leaderId":"L022","week":"2026-08-10","date":"2026-08-16","present":["D036"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0067","leaderId":"L022","week":"2026-08-17","date":"2026-08-20","present":["D036"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0068","leaderId":"L022","week":"2026-08-24","date":"2026-08-26","present":["D036"],"absent":[],"note":"Met over breakfast."},{"id":"M0069","leaderId":"L022","week":"2026-08-31","date":"2026-09-02","present":["D036"],"absent":[],"note":"Met over breakfast."},{"id":"M0070","leaderId":"L022","week":"2026-09-14","date":"2026-09-16","present":["D036"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0071","leaderId":"L023","week":"2026-08-17","date":"2026-08-19","present":["D037","D038","D040"],"absent":["D039"],"note":"Met over breakfast."},{"id":"M0072","leaderId":"L023","week":"2026-08-24","date":"2026-08-30","present":["D037","D038","D039","D040"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0073","leaderId":"L023","week":"2026-08-31","date":"2026-09-01","present":["D037","D038","D039","D040"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0074","leaderId":"L023","week":"2026-09-07","date":"2026-09-10","present":["D038","D039","D040"],"absent":["D037"],"note":"Covered CAMP step 2."},{"id":"M0075","leaderId":"L023","week":"2026-09-14","date":"2026-09-15","present":["D037","D040"],"absent":["D038","D039"],"note":"Worked through Luke 9."},{"id":"M0076","leaderId":"L024","week":"2026-08-31","date":"2026-09-02","present":["D041"],"absent":[],"note":"Met over breakfast."},{"id":"M0077","leaderId":"L024","week":"2026-09-14","date":"2026-09-16","present":["D041"],"absent":[],"note":""},{"id":"M0078","leaderId":"L025","week":"2026-08-10","date":"2026-08-12","present":["D042","D043"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0079","leaderId":"L025","week":"2026-08-17","date":"2026-08-20","present":["D042","D043"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0080","leaderId":"L025","week":"2026-08-24","date":"2026-08-27","present":["D042","D043"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0081","leaderId":"L025","week":"2026-08-31","date":"2026-09-03","present":["D042","D043"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0082","leaderId":"L025","week":"2026-09-07","date":"2026-09-09","present":["D042","D043"],"absent":[],"note":"Met over breakfast."},{"id":"M0083","leaderId":"L025","week":"2026-09-14","date":"2026-09-16","present":["D042","D043"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0084","leaderId":"L026","week":"2026-08-10","date":"2026-08-12","present":["D044"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0085","leaderId":"L026","week":"2026-08-17","date":"2026-08-20","present":["D044"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0086","leaderId":"L026","week":"2026-08-24","date":"2026-08-26","present":["D044"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0087","leaderId":"L026","week":"2026-08-31","date":"2026-09-02","present":["D044"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0088","leaderId":"L026","week":"2026-09-07","date":"2026-09-09","present":["D044"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0089","leaderId":"L026","week":"2026-09-14","date":"2026-09-20","present":["D044"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0090","leaderId":"L027","week":"2026-08-10","date":"2026-08-12","present":["D045"],"absent":[],"note":"Met over breakfast."},{"id":"M0091","leaderId":"L027","week":"2026-08-17","date":"2026-08-19","present":["D045"],"absent":[],"note":""},{"id":"M0092","leaderId":"L027","week":"2026-08-24","date":"2026-08-27","present":["D045"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0093","leaderId":"L027","week":"2026-08-31","date":"2026-09-02","present":["D045"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0094","leaderId":"L027","week":"2026-09-07","date":"2026-09-08","present":["D045"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0095","leaderId":"L027","week":"2026-09-14","date":"2026-09-17","present":["D045"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0096","leaderId":"L028","week":"2026-08-10","date":"2026-08-11","present":["D046"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0097","leaderId":"L028","week":"2026-08-17","date":"2026-08-19","present":["D046"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0098","leaderId":"L028","week":"2026-08-24","date":"2026-08-26","present":["D046"],"absent":[],"note":"Met over breakfast."},{"id":"M0099","leaderId":"L028","week":"2026-08-31","date":"2026-09-02","present":["D046"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0100","leaderId":"L028","week":"2026-09-07","date":"2026-09-10","present":["D046"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0101","leaderId":"L028","week":"2026-09-14","date":"2026-09-20","present":["D046"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0102","leaderId":"L029","week":"2026-08-24","date":"2026-08-30","present":["D047"],"absent":[],"note":"Met over breakfast."},{"id":"M0103","leaderId":"L029","week":"2026-09-07","date":"2026-09-10","present":["D047"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0104","leaderId":"L030","week":"2026-08-31","date":"2026-09-02","present":["D048"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0105","leaderId":"L030","week":"2026-09-07","date":"2026-09-10","present":["D048"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0106","leaderId":"L030","week":"2026-09-14","date":"2026-09-16","present":["D048"],"absent":[],"note":"Met over breakfast."},{"id":"M0107","leaderId":"L031","week":"2026-09-07","date":"2026-09-09","present":["D049","D050"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0108","leaderId":"L031","week":"2026-09-14","date":"2026-09-16","present":["D049","D050"],"absent":[],"note":"Met over breakfast."},{"id":"M0109","leaderId":"L032","week":"2026-08-10","date":"2026-08-11","present":["D051"],"absent":[],"note":""},{"id":"M0110","leaderId":"L032","week":"2026-08-17","date":"2026-08-20","present":["D051"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0111","leaderId":"L032","week":"2026-08-24","date":"2026-08-26","present":["D051"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0112","leaderId":"L032","week":"2026-08-31","date":"2026-09-03","present":["D051"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0113","leaderId":"L032","week":"2026-09-07","date":"2026-09-09","present":["D051"],"absent":[],"note":""},{"id":"M0114","leaderId":"L032","week":"2026-09-14","date":"2026-09-15","present":["D051"],"absent":[],"note":"Met over breakfast."},{"id":"M0115","leaderId":"L033","week":"2026-08-10","date":"2026-08-13","present":["D053"],"absent":["D052"],"note":""},{"id":"M0116","leaderId":"L033","week":"2026-08-17","date":"2026-08-19","present":["D052","D053"],"absent":[],"note":""},{"id":"M0117","leaderId":"L033","week":"2026-08-24","date":"2026-08-26","present":["D052","D053"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0118","leaderId":"L033","week":"2026-09-07","date":"2026-09-08","present":["D053"],"absent":["D052"],"note":"Met over breakfast."},{"id":"M0119","leaderId":"L033","week":"2026-09-14","date":"2026-09-17","present":["D052","D053"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0120","leaderId":"L034","week":"2026-09-07","date":"2026-09-08","present":["D054"],"absent":["D055"],"note":"Covered CAMP step 2."},{"id":"M0121","leaderId":"L035","week":"2026-08-10","date":"2026-08-16","present":["D057"],"absent":["D056"],"note":""},{"id":"M0122","leaderId":"L035","week":"2026-08-17","date":"2026-08-18","present":["D056","D057"],"absent":[],"note":"Met over breakfast."},{"id":"M0123","leaderId":"L035","week":"2026-08-24","date":"2026-08-25","present":["D056","D057"],"absent":[],"note":""},{"id":"M0124","leaderId":"L035","week":"2026-08-31","date":"2026-09-03","present":["D056","D057"],"absent":[],"note":"Met over breakfast."},{"id":"M0125","leaderId":"L035","week":"2026-09-07","date":"2026-09-09","present":["D056"],"absent":["D057"],"note":"Short week, quick check-in."},{"id":"M0126","leaderId":"L035","week":"2026-09-14","date":"2026-09-16","present":["D057"],"absent":["D056"],"note":"Prayer + review of last week's reading."},{"id":"M0127","leaderId":"L036","week":"2026-08-24","date":"2026-08-27","present":["D058"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0128","leaderId":"L036","week":"2026-09-07","date":"2026-09-09","present":["D058"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0129","leaderId":"L036","week":"2026-09-14","date":"2026-09-16","present":["D058"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0130","leaderId":"L037","week":"2026-08-10","date":"2026-08-11","present":["D059"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0131","leaderId":"L037","week":"2026-08-17","date":"2026-08-20","present":["D059"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0132","leaderId":"L037","week":"2026-08-24","date":"2026-08-26","present":["D059"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0133","leaderId":"L037","week":"2026-08-31","date":"2026-09-06","present":["D059"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0134","leaderId":"L037","week":"2026-09-07","date":"2026-09-09","present":["D059"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0135","leaderId":"L037","week":"2026-09-14","date":"2026-09-20","present":["D059"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0136","leaderId":"L039","week":"2026-08-31","date":"2026-09-02","present":["D062","D063"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0137","leaderId":"L039","week":"2026-09-07","date":"2026-09-13","present":["D062","D063"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0138","leaderId":"L039","week":"2026-09-14","date":"2026-09-17","present":["D062","D063"],"absent":[],"note":"Met over breakfast."},{"id":"M0139","leaderId":"L040","week":"2026-08-31","date":"2026-09-03","present":["D064","D065"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0140","leaderId":"L040","week":"2026-09-07","date":"2026-09-10","present":["D064","D065"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0141","leaderId":"L040","week":"2026-09-14","date":"2026-09-15","present":["D065"],"absent":["D064"],"note":"Met over breakfast."},{"id":"M0142","leaderId":"L041","week":"2026-08-31","date":"2026-09-02","present":["D066","D067"],"absent":["D068"],"note":""},{"id":"M0143","leaderId":"L041","week":"2026-09-07","date":"2026-09-09","present":["D066","D067","D068"],"absent":[],"note":"Met over breakfast."},{"id":"M0144","leaderId":"L041","week":"2026-09-14","date":"2026-09-20","present":["D066","D068"],"absent":["D067"],"note":"Short week, quick check-in."},{"id":"M0145","leaderId":"L042","week":"2026-08-31","date":"2026-09-03","present":["D069","D070"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0146","leaderId":"L042","week":"2026-09-07","date":"2026-09-13","present":["D070"],"absent":["D069"],"note":"Covered CAMP step 2."},{"id":"M0147","leaderId":"L042","week":"2026-09-14","date":"2026-09-16","present":["D069","D070"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0148","leaderId":"L043","week":"2026-08-17","date":"2026-08-19","present":["D071"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0149","leaderId":"L045","week":"2026-08-17","date":"2026-08-18","present":["D074","D075","D076"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0150","leaderId":"L045","week":"2026-08-24","date":"2026-08-30","present":["D074","D076"],"absent":["D075"],"note":"Covered CAMP step 2."},{"id":"M0151","leaderId":"L045","week":"2026-08-31","date":"2026-09-06","present":["D074","D075","D076"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0152","leaderId":"L045","week":"2026-09-14","date":"2026-09-17","present":["D074","D075","D076"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0153","leaderId":"L046","week":"2026-08-17","date":"2026-08-18","present":["D077","D078"],"absent":[],"note":"Met over breakfast."},{"id":"M0154","leaderId":"L046","week":"2026-08-24","date":"2026-08-27","present":["D077","D078"],"absent":[],"note":"Met over breakfast."},{"id":"M0155","leaderId":"L046","week":"2026-08-31","date":"2026-09-06","present":["D077","D078"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0156","leaderId":"L046","week":"2026-09-14","date":"2026-09-20","present":["D077","D078"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0157","leaderId":"L047","week":"2026-08-10","date":"2026-08-12","present":["D079"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0158","leaderId":"L047","week":"2026-08-17","date":"2026-08-19","present":["D079"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0159","leaderId":"L047","week":"2026-08-24","date":"2026-08-30","present":["D079"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0160","leaderId":"L047","week":"2026-08-31","date":"2026-09-03","present":["D079"],"absent":[],"note":""},{"id":"M0161","leaderId":"L047","week":"2026-09-07","date":"2026-09-09","present":["D079"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0162","leaderId":"L048","week":"2026-08-24","date":"2026-08-25","present":["D080"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0163","leaderId":"L048","week":"2026-08-31","date":"2026-09-03","present":["D080"],"absent":[],"note":""},{"id":"M0164","leaderId":"L048","week":"2026-09-07","date":"2026-09-09","present":["D080"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0165","leaderId":"L048","week":"2026-09-14","date":"2026-09-15","present":["D080"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0166","leaderId":"L049","week":"2026-08-17","date":"2026-08-20","present":["D081","D082","D083"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0167","leaderId":"L049","week":"2026-08-24","date":"2026-08-25","present":["D083"],"absent":["D081","D082"],"note":"Prayer + review of last week's reading."},{"id":"M0168","leaderId":"L049","week":"2026-08-31","date":"2026-09-06","present":["D081","D083"],"absent":["D082"],"note":"Met over breakfast."},{"id":"M0169","leaderId":"L049","week":"2026-09-07","date":"2026-09-13","present":["D081","D083"],"absent":["D082"],"note":"Worked through Luke 9."},{"id":"M0170","leaderId":"L049","week":"2026-09-14","date":"2026-09-16","present":["D081","D082"],"absent":["D083"],"note":"Worked through Luke 9."},{"id":"M0171","leaderId":"L050","week":"2026-08-24","date":"2026-08-26","present":["D084"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0172","leaderId":"L050","week":"2026-08-31","date":"2026-09-02","present":["D084"],"absent":[],"note":""},{"id":"M0173","leaderId":"L050","week":"2026-09-07","date":"2026-09-09","present":["D084"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0174","leaderId":"L050","week":"2026-09-14","date":"2026-09-15","present":["D084"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0175","leaderId":"L051","week":"2026-09-07","date":"2026-09-10","present":["D085","D086","D087","D088"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0176","leaderId":"L052","week":"2026-08-24","date":"2026-08-27","present":["D089"],"absent":[],"note":""},{"id":"M0177","leaderId":"L052","week":"2026-08-31","date":"2026-09-03","present":["D089"],"absent":[],"note":"Met over breakfast."},{"id":"M0178","leaderId":"L052","week":"2026-09-07","date":"2026-09-09","present":["D089"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0179","leaderId":"L052","week":"2026-09-14","date":"2026-09-15","present":["D089"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0180","leaderId":"L053","week":"2026-08-31","date":"2026-09-02","present":["D091"],"absent":["D090"],"note":"Short week, quick check-in."},{"id":"M0181","leaderId":"L053","week":"2026-09-14","date":"2026-09-16","present":["D090","D091"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0182","leaderId":"L054","week":"2026-08-17","date":"2026-08-19","present":["D092"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0183","leaderId":"L054","week":"2026-08-24","date":"2026-08-30","present":["D092"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0184","leaderId":"L054","week":"2026-08-31","date":"2026-09-06","present":["D092"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0185","leaderId":"L054","week":"2026-09-07","date":"2026-09-09","present":["D092"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0186","leaderId":"L054","week":"2026-09-14","date":"2026-09-15","present":["D092"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0187","leaderId":"L055","week":"2026-08-10","date":"2026-08-12","present":["D093"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0188","leaderId":"L055","week":"2026-08-31","date":"2026-09-02","present":["D093"],"absent":[],"note":""},{"id":"M0189","leaderId":"L055","week":"2026-09-14","date":"2026-09-16","present":["D093"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0190","leaderId":"L056","week":"2026-09-14","date":"2026-09-20","present":["D095","D096"],"absent":["D094"],"note":"Short week, quick check-in."},{"id":"M0191","leaderId":"L057","week":"2026-08-17","date":"2026-08-19","present":["D097"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0192","leaderId":"L057","week":"2026-08-24","date":"2026-08-30","present":["D097"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0193","leaderId":"L057","week":"2026-08-31","date":"2026-09-03","present":["D097"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0194","leaderId":"L057","week":"2026-09-07","date":"2026-09-13","present":["D097"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0195","leaderId":"L057","week":"2026-09-14","date":"2026-09-17","present":["D097"],"absent":[],"note":"Met over breakfast."},{"id":"M0196","leaderId":"L058","week":"2026-08-17","date":"2026-08-23","present":["D098"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0197","leaderId":"L058","week":"2026-08-24","date":"2026-08-26","present":["D098"],"absent":[],"note":""},{"id":"M0198","leaderId":"L058","week":"2026-08-31","date":"2026-09-01","present":["D098"],"absent":[],"note":"Met over breakfast."},{"id":"M0199","leaderId":"L058","week":"2026-09-14","date":"2026-09-16","present":["D098"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0200","leaderId":"L059","week":"2026-08-24","date":"2026-08-26","present":["D100","D101"],"absent":["D099"],"note":"Prayer + review of last week's reading."},{"id":"M0201","leaderId":"L059","week":"2026-08-31","date":"2026-09-02","present":["D099","D100","D101"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0202","leaderId":"L059","week":"2026-09-07","date":"2026-09-09","present":["D099","D100","D101"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0203","leaderId":"L059","week":"2026-09-14","date":"2026-09-15","present":["D099","D100","D101"],"absent":[],"note":"Met over breakfast."},{"id":"M0204","leaderId":"L060","week":"2026-08-31","date":"2026-09-01","present":["D102"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0205","leaderId":"L061","week":"2026-08-17","date":"2026-08-18","present":["D103"],"absent":[],"note":"Met over breakfast."},{"id":"M0206","leaderId":"L061","week":"2026-08-24","date":"2026-08-26","present":["D103"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0207","leaderId":"L061","week":"2026-08-31","date":"2026-09-03","present":["D103"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0208","leaderId":"L061","week":"2026-09-14","date":"2026-09-15","present":["D103"],"absent":[],"note":"Met over breakfast."},{"id":"M0209","leaderId":"L062","week":"2026-08-17","date":"2026-08-20","present":["D104"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0210","leaderId":"L062","week":"2026-08-24","date":"2026-08-26","present":["D104"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0211","leaderId":"L062","week":"2026-08-31","date":"2026-09-06","present":["D104"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0212","leaderId":"L062","week":"2026-09-14","date":"2026-09-16","present":["D104"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0213","leaderId":"L063","week":"2026-08-10","date":"2026-08-11","present":["D105"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0214","leaderId":"L063","week":"2026-08-17","date":"2026-08-23","present":["D105"],"absent":[],"note":"Met over breakfast."},{"id":"M0215","leaderId":"L063","week":"2026-08-24","date":"2026-08-25","present":["D105"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0216","leaderId":"L063","week":"2026-08-31","date":"2026-09-06","present":["D105"],"absent":[],"note":"Met over breakfast."},{"id":"M0217","leaderId":"L063","week":"2026-09-07","date":"2026-09-09","present":["D105"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0218","leaderId":"L063","week":"2026-09-14","date":"2026-09-16","present":["D105"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0219","leaderId":"L064","week":"2026-08-31","date":"2026-09-03","present":["D106"],"absent":[],"note":"Met over breakfast."},{"id":"M0220","leaderId":"L064","week":"2026-09-07","date":"2026-09-13","present":["D106"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0221","leaderId":"L064","week":"2026-09-14","date":"2026-09-16","present":["D106"],"absent":[],"note":"Met over breakfast."},{"id":"M0222","leaderId":"L065","week":"2026-08-24","date":"2026-08-30","present":["D107"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0223","leaderId":"L065","week":"2026-08-31","date":"2026-09-03","present":["D107"],"absent":[],"note":""},{"id":"M0224","leaderId":"L065","week":"2026-09-07","date":"2026-09-09","present":["D107"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0225","leaderId":"L065","week":"2026-09-14","date":"2026-09-17","present":["D107"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0226","leaderId":"L066","week":"2026-08-10","date":"2026-08-11","present":["D108","D109","D111"],"absent":["D110"],"note":"Worked through Luke 9."},{"id":"M0227","leaderId":"L066","week":"2026-08-17","date":"2026-08-19","present":["D110","D111"],"absent":["D108","D109"],"note":"Prayer + review of last week's reading."},{"id":"M0228","leaderId":"L066","week":"2026-08-24","date":"2026-08-25","present":["D108","D111"],"absent":["D109","D110"],"note":"Worked through Luke 9."},{"id":"M0229","leaderId":"L066","week":"2026-08-31","date":"2026-09-02","present":["D109","D110","D111"],"absent":["D108"],"note":"Covered CAMP step 2."},{"id":"M0230","leaderId":"L066","week":"2026-09-07","date":"2026-09-08","present":["D108","D109","D110","D111"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0231","leaderId":"L066","week":"2026-09-14","date":"2026-09-16","present":["D108","D109","D110","D111"],"absent":[],"note":""},{"id":"M0232","leaderId":"L067","week":"2026-08-17","date":"2026-08-19","present":["D112"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0233","leaderId":"L067","week":"2026-08-24","date":"2026-08-26","present":["D112"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0234","leaderId":"L067","week":"2026-08-31","date":"2026-09-03","present":["D112"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0235","leaderId":"L067","week":"2026-09-07","date":"2026-09-13","present":["D112"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0236","leaderId":"L067","week":"2026-09-14","date":"2026-09-17","present":["D112"],"absent":[],"note":"Met over breakfast."},{"id":"M0237","leaderId":"L068","week":"2026-08-10","date":"2026-08-12","present":["D113"],"absent":[],"note":"Met over breakfast."},{"id":"M0238","leaderId":"L068","week":"2026-08-17","date":"2026-08-20","present":["D113"],"absent":[],"note":""},{"id":"M0239","leaderId":"L068","week":"2026-08-24","date":"2026-08-30","present":["D113"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0240","leaderId":"L068","week":"2026-08-31","date":"2026-09-02","present":["D113"],"absent":[],"note":"Met over breakfast."},{"id":"M0241","leaderId":"L068","week":"2026-09-07","date":"2026-09-08","present":["D113"],"absent":[],"note":""},{"id":"M0242","leaderId":"L068","week":"2026-09-14","date":"2026-09-17","present":["D113"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0243","leaderId":"L069","week":"2026-08-10","date":"2026-08-12","present":["D114"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0244","leaderId":"L069","week":"2026-08-17","date":"2026-08-23","present":["D114"],"absent":[],"note":""},{"id":"M0245","leaderId":"L069","week":"2026-09-07","date":"2026-09-08","present":["D114"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0246","leaderId":"L070","week":"2026-08-17","date":"2026-08-18","present":["D116","D117"],"absent":["D115"],"note":"Covered CAMP step 2."},{"id":"M0247","leaderId":"L070","week":"2026-08-24","date":"2026-08-26","present":["D115","D116","D117"],"absent":[],"note":"Met over breakfast."},{"id":"M0248","leaderId":"L070","week":"2026-08-31","date":"2026-09-06","present":["D115","D116","D117"],"absent":[],"note":""},{"id":"M0249","leaderId":"L070","week":"2026-09-07","date":"2026-09-09","present":["D115","D116","D117"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0250","leaderId":"L071","week":"2026-08-17","date":"2026-08-18","present":["D118","D119"],"absent":[],"note":""},{"id":"M0251","leaderId":"L071","week":"2026-08-31","date":"2026-09-02","present":["D118","D119"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0252","leaderId":"L071","week":"2026-09-07","date":"2026-09-10","present":["D119"],"absent":["D118"],"note":"Worked through Luke 9."},{"id":"M0253","leaderId":"L071","week":"2026-09-14","date":"2026-09-16","present":["D118","D119"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0254","leaderId":"L072","week":"2026-08-10","date":"2026-08-13","present":["D120"],"absent":[],"note":"Met over breakfast."},{"id":"M0255","leaderId":"L072","week":"2026-08-17","date":"2026-08-19","present":["D120"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0256","leaderId":"L072","week":"2026-08-24","date":"2026-08-26","present":["D120"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0257","leaderId":"L072","week":"2026-08-31","date":"2026-09-02","present":["D120"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0258","leaderId":"L072","week":"2026-09-07","date":"2026-09-08","present":["D120"],"absent":[],"note":""},{"id":"M0259","leaderId":"L072","week":"2026-09-14","date":"2026-09-16","present":["D120"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0260","leaderId":"L073","week":"2026-08-31","date":"2026-09-02","present":["D121"],"absent":[],"note":"Met over breakfast."},{"id":"M0261","leaderId":"L073","week":"2026-09-07","date":"2026-09-09","present":["D121"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0262","leaderId":"L073","week":"2026-09-14","date":"2026-09-16","present":["D121"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0263","leaderId":"L074","week":"2026-08-10","date":"2026-08-11","present":["D122"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0264","leaderId":"L074","week":"2026-08-17","date":"2026-08-18","present":["D122"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0265","leaderId":"L074","week":"2026-08-24","date":"2026-08-27","present":["D122"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0266","leaderId":"L074","week":"2026-08-31","date":"2026-09-03","present":["D122"],"absent":[],"note":"Short week, quick check-in."},{"id":"M0267","leaderId":"L074","week":"2026-09-07","date":"2026-09-08","present":["D122"],"absent":[],"note":""},{"id":"M0268","leaderId":"L074","week":"2026-09-14","date":"2026-09-16","present":["D122"],"absent":[],"note":""},{"id":"M0269","leaderId":"L075","week":"2026-08-10","date":"2026-08-13","present":["D123"],"absent":[],"note":"Covered CAMP step 2."},{"id":"M0270","leaderId":"L075","week":"2026-08-17","date":"2026-08-19","present":["D123"],"absent":[],"note":"Met over breakfast."},{"id":"M0271","leaderId":"L075","week":"2026-08-24","date":"2026-08-30","present":["D123"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0272","leaderId":"L075","week":"2026-08-31","date":"2026-09-03","present":["D123"],"absent":[],"note":""},{"id":"M0273","leaderId":"L075","week":"2026-09-07","date":"2026-09-09","present":["D123"],"absent":[],"note":"Worked through Luke 9."},{"id":"M0274","leaderId":"L075","week":"2026-09-14","date":"2026-09-16","present":["D123"],"absent":[],"note":"Prayer + review of last week's reading."},{"id":"M0275","leaderId":"L076","week":"2026-08-24","date":"2026-08-27","present":["D124","D125"],"absent":[],"note":"Prayer + review of last week's reading."}]};
+var DATA = JSON.parse(JSON.stringify(SEED));
+
+var TODAY = new Date(DATA.meta.generated + "T12:00:00");
+var QUIET_WEEKS = 3;
+var MAILTO_MAX = 60;            // mailto: URLs break past roughly this many addresses            // leader is "quiet" after this many weeks with no meeting
+var state = {
+  tab: "overview",
+  sel: {},                      // tabId -> Set of ids
+  sort: {},                     // tabId -> {key, dir}
+  filt: {},                     // tabId -> {q, campus, groupType, gender, status}
+  msg: { channel: "email", people: [] }
+};
+
+/* ---------- ministry calendar -------------------------------------
+   Groups run the 2nd week of August through December, then January
+   through May. Weeks containing Thanksgiving, Christmas, New Year's
+   Day or Easter are not counted. DATA.weeks holds the resulting list;
+   buildWeeks() regenerates it for any ministry year.               */
+function easter(y){
+  var a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,
+      f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),
+      h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,
+      m=Math.floor((a+11*h+22*l)/451);
+  return new Date(Date.UTC(y,Math.floor((h+l-7*m+114)/31)-1,((h+l-7*m+114)%31)+1));
+}
+function mondayOf(d){var x=new Date(d);var w=(x.getUTCDay()+6)%7;x.setUTCDate(x.getUTCDate()-w);return x;}
+function iso(d){return d.toISOString().slice(0,10);}
+function buildWeeks(y0){
+  var y1=y0+1, aug1=new Date(Date.UTC(y0,7,1)), first=mondayOf(aug1);
+  if(first<aug1) first=new Date(first.getTime()+6048e5);
+  var fallStart=new Date(first.getTime()+6048e5);
+  var springStart=mondayOf(new Date(Date.UTC(y1,0,1)));
+  if(springStart<Date.UTC(y1,0,1)) springStart=new Date(springStart.getTime()+6048e5);
+  var tg=new Date(Date.UTC(y0,10,1));
+  tg.setUTCDate(tg.getUTCDate()+((4-tg.getUTCDay()+7)%7)+21);
+  var skip={};
+  [tg,new Date(Date.UTC(y0,11,25)),new Date(Date.UTC(y1,0,1)),easter(y1)]
+    .forEach(function(d){skip[iso(mondayOf(d))]=1;});
+  var out=[];
+  [[fallStart,new Date(Date.UTC(y0,11,31)),"Fall"],
+   [springStart,new Date(Date.UTC(y1,4,31)),"Spring"]].forEach(function(t){
+    for(var d=new Date(t[0]); d.getTime()+5184e5<=t[1].getTime(); d=new Date(d.getTime()+6048e5)){
+      if(!skip[iso(d)]) out.push({monday:iso(d),term:t[2]});
+    }
+  });
+  return out;
+}
+
+/* ---------- derived model ----------------------------------------- */
+var M = {};
+function derive(){
+  var weeks = DATA.weeks;
+  var elapsed = weeks.filter(function(w){ return new Date(w.monday+"T12:00:00") <= TODAY; });
+  var thisWeek = elapsed.length ? elapsed[elapsed.length-1].monday : weeks[0].monday;
+
+  var byLeader = {};
+  DATA.meetings.forEach(function(m){ (byLeader[m.leaderId]=byLeader[m.leaderId]||[]).push(m); });
+  Object.keys(byLeader).forEach(function(k){
+    byLeader[k].sort(function(a,b){ return a.date < b.date ? 1 : -1; });
+  });
+
+  var disByLeader = {};
+  DATA.disciples.forEach(function(d){ (disByLeader[d.leaderId]=disByLeader[d.leaderId]||[]).push(d); });
+
+  var leaders = DATA.leaders.map(function(l){
+    var ms = byLeader[l.id] || [], ds = disByLeader[l.id] || [];
+    var last = ms[0] || null;
+    var weeksSince = null;
+    if(last){
+      var li = elapsed.map(function(w){return w.monday;}).indexOf(last.week);
+      weeksSince = li < 0 ? null : (elapsed.length - 1 - li);
+    }
+    var metThisWeek = ms.some(function(m){ return m.week === thisWeek; });
+    var startIdx = Math.max(0, elapsed.map(function(w){return w.monday;}).indexOf(l.startDate));
+    var possible = l.status === "active" ? Math.max(1, elapsed.length - startIdx) : 0;
+    return Object.assign({}, l, {
+      name: l.first + " " + l.last,
+      disciples: ds,
+      discipleCount: ds.length,
+      meetings: ms,
+      totalMet: ms.length,
+      lastMeeting: last,
+      weeksSince: last ? weeksSince : (l.status === "active" ? elapsed.length : null),
+      metThisWeek: metThisWeek,
+      possibleToDate: possible,
+      meetRate: possible ? ms.length / possible : 0,
+      yearPct: ms.length / weeks.length,
+      quiet: l.status === "active" && (!last || weeksSince === null || weeksSince >= QUIET_WEEKS)
+    });
+  });
+
+  var active = leaders.filter(function(l){ return l.status === "active"; });
+  var available = leaders.filter(function(l){ return l.status === "available"; });
+  var idx = {}; leaders.forEach(function(l){ idx[l.id] = l; });
+
+  var metCount = active.filter(function(l){ return l.metThisWeek; }).length;
+  var ytdHeld = active.reduce(function(s,l){ return s + l.totalMet; }, 0);
+  var ytdPoss = active.reduce(function(s,l){ return s + l.possibleToDate; }, 0);
+
+  M = {
+    weeks: weeks, elapsed: elapsed, thisWeek: thisWeek,
+    weekNo: elapsed.length, weekTotal: weeks.length,
+    leaders: leaders, active: active, available: available, idx: idx,
+    disciples: DATA.disciples.map(function(d){
+      var l = idx[d.leaderId] || {};
+      return Object.assign({}, d, {
+        name: d.first + " " + d.last, leaderName: l.name || "Unassigned",
+        lastMeeting: l.lastMeeting || null, weeksSince: l.weeksSince,
+        groupType: l.groupType || "", quiet: !!l.quiet
+      });
+    }),
+    possibleThisWeek: active.length,
+    metThisWeek: metCount,
+    weekPct: active.length ? metCount / active.length : 0,
+    quietList: active.filter(function(l){ return l.quiet; })
+                     .sort(function(a,b){ return (b.weeksSince||99)-(a.weeksSince||99); }),
+    ytdPct: ytdPoss ? ytdHeld / ytdPoss : 0,
+    ytdHeld: ytdHeld, ytdPoss: ytdPoss
+  };
+  M.quietPct = active.length ? M.quietList.length / active.length : 0;
+}
+
+/* ---------- small helpers ------------------------------------------ */
+function el(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function pct(x){ return Math.round(x*100) + "%"; }
+function fdate(s){
+  if(!s) return "—";
+  var d = new Date(s + "T12:00:00");
+  return d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+}
+function fshort(s){
+  if(!s) return "—";
+  var d = new Date(s + "T12:00:00");
+  return d.toLocaleDateString("en-US",{month:"short",day:"numeric"});
+}
+function gender(g){ return g === "M" ? "Male" : "Female"; }
+function statusPill(l){
+  if(l.status !== "active") return '<span class="tag">Available</span>';
+  if(l.quiet) return '<span class="pill quiet">Quiet ' + (l.weeksSince||0) + ' wks</span>';
+  if(l.metThisWeek) return '<span class="pill met">Met this week</span>';
+  return '<span class="pill watch">' + (l.weeksSince===0?'Not yet':(l.weeksSince||1) + ' wk ago') + '</span>';
+}
+function toast(msg){
+  var t = el("toast"); t.textContent = msg; t.hidden = false;
+  clearTimeout(toast._t); toast._t = setTimeout(function(){ t.hidden = true; }, 2600);
+}
+function download(name, text, mime){
+  var b = new Blob([text], {type: mime || "text/plain;charset=utf-8"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(b); a.download = name;
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 400);
+}
+
+/* ---------- tab definitions ---------------------------------------- */
+var TABS = [
+  {id:"overview",  label:"Overview"},
+  {id:"details",   label:"Details"},
+  {id:"leaders",   label:"Current leaders"},
+  {id:"disciples", label:"Current disciples"},
+  {id:"available", label:"Available mentors"}
+];
+function tabCount(id){
+  if(id==="details")   return M.active.length;
+  if(id==="leaders")   return M.active.length;
+  if(id==="disciples") return M.disciples.length;
+  if(id==="available") return M.available.length;
+  return null;
+}
+function renderTabs(){
+  el("tabbar").innerHTML = TABS.map(function(t){
+    var c = tabCount(t.id);
+    return '<button class="tab" role="tab" data-tab="'+t.id+'" aria-selected="'+(state.tab===t.id)+'">'
+      + esc(t.label) + (c!=null ? ' <span class="cnt num">'+c+'</span>' : '') + '</button>';
+  }).join("");
+}
+
+/* ---------- overview ----------------------------------------------- */
+function renderOverview(){
+  var marks = M.active.map(function(l){
+    var cls = l.metThisWeek ? "met" : (l.quiet ? "quiet" : "none");
+    var title = l.name + " · " + (l.metThisWeek ? "met this week"
+      : (l.lastMeeting ? "last met " + fdate(l.lastMeeting.date) : "no meeting recorded"));
+    return '<button class="mark '+cls+'" data-leader="'+l.id+'" title="'+esc(title)+'" aria-label="'+esc(title)+'"></button>';
+  }).join("");
+
+  el("view-overview").innerHTML =
+  '<div class="week">'
+  + '<div class="week-fig">'
+    + '<p class="k">Meetings reported, week of ' + fdate(M.thisWeek) + '</p>'
+    + '<div class="big">' + M.metThisWeek + '<span class="of"> / ' + M.possibleThisWeek + '</span></div>'
+    + '<div class="bar"><i style="width:' + (M.weekPct*100) + '%"></i></div>'
+    + '<p class="pct"><b>' + pct(M.weekPct) + '</b> of possible meetings have attendance in.</p>'
+  + '</div>'
+  + '<div class="week-grid">'
+    + '<div class="hdr"><h2>Every active leader, one square</h2>'
+      + '<span class="sub">Week ' + M.weekNo + ' of ' + M.weekTotal + ' · pick a square to open that leader\'s log</span></div>'
+    + '<div class="marks">' + marks + '</div>'
+    + '<div class="legend">'
+      + '<span><i class="swatch" style="background:var(--met);border-color:var(--met)"></i> Attendance reported</span>'
+      + '<span><i class="swatch" style="background:#fff;border-color:#BFC8C5"></i> Nothing in yet</span>'
+      + '<span><i class="swatch" style="background:var(--quiet);border-color:var(--quiet)"></i> Quiet ' + QUIET_WEEKS + '+ weeks</span>'
+    + '</div>'
+  + '</div></div>'
+
+  + '<div class="stats">'
+    + stat(M.active.length, "Active leaders", M.available.length + " more trained and available")
+    + stat(M.disciples.length, "Disciples being met with",
+           (M.disciples.length / Math.max(1,M.active.length)).toFixed(1) + " per leader on average")
+    + stat(pct(M.ytdPct), "Meetings held year to date",
+           M.ytdHeld.toLocaleString() + " of " + M.ytdPoss.toLocaleString() + " possible so far")
+    + stat(pct(M.quietPct), "Leaders quiet " + QUIET_WEEKS + "+ weeks",
+           M.quietList.length + " of " + M.active.length + " leaders", true)
+  + '</div>'
+
+  + '<div class="panel">'
+    + '<div class="panel-hd"><h2>No meeting reported in ' + QUIET_WEEKS + ' or more weeks</h2>'
+      + '<p>' + M.quietList.length + ' leaders · ' + M.quietList.reduce(function(s,l){return s+l.discipleCount;},0) + ' disciples affected</p>'
+      + '<div class="sp">'
+        + '<span class="selnote" id="quiet-note"></span>'
+        + '<button class="btn primary" id="quiet-msg" disabled>Message selected</button>'
+      + '</div></div>'
+    + (M.quietList.length ? '<div class="tscroll">' + table("quiet", quietCols(), M.quietList) + '</div>'
+       : '<div class="empty"><b>Every leader has met inside the last ' + QUIET_WEEKS + ' weeks.</b>Nothing needs a nudge today.</div>')
+  + '</div>';
+
+  wireTable("quiet", M.quietList, "quiet-note", "quiet-msg");
+  el("view-overview").querySelectorAll(".mark").forEach(function(b){
+    b.addEventListener("click", function(){ openLog(b.dataset.leader); });
+  });
+}
+function stat(v,l,n,alarm){
+  return '<div class="stat' + (alarm?' alarm':'') + '"><div class="v">' + esc(v) + '</div>'
+    + '<div class="l">' + esc(l) + '</div><div class="n">' + esc(n) + '</div></div>';
+}
+
+/* ---------- column definitions -------------------------------------
+   v: value used for sorting.  h: cell HTML.                          */
+var COL = {
+  leader:   {key:"name", label:"Leader", v:function(l){return l.last+l.first;},
+             h:function(l){return '<td class="name">'+esc(l.name)+'</td>';}},
+  disciples:{key:"disciples", label:"Disciple(s)", v:function(l){return l.discipleCount;},
+             h:function(l){
+               var names = l.disciples.map(function(d){return d.name;});
+               return '<td class="sub">'+esc(names.join(", ") || "—")+'</td>';}},
+  start:    {key:"start", label:"Start date", v:function(l){return l.startDate||"";},
+             h:function(l){return '<td class="n sub">'+fdate(l.startDate)+'</td>';}},
+  total:    {key:"total", label:"Total times met", v:function(l){return l.totalMet;},
+             h:function(l){return '<td class="n">'+l.totalMet+'</td>';}},
+  rate:     {key:"rate", label:"Meetings %", v:function(l){return l.meetRate;},
+             h:function(l){return '<td class="n">'+pct(l.meetRate)
+               +'<span class="minibar"><i style="width:'+Math.min(100,l.meetRate*100)+'%"></i></span></td>';}},
+  log:      {key:"log", label:"Meetings", v:function(l){return l.totalMet;},
+             h:function(l){return '<td><a href="#log='+l.id+'" target="_blank" rel="noopener">All '+l.totalMet+'</a></td>';}},
+  recent:   {key:"recent", label:"Most recent meeting", v:function(l){return l.lastMeeting?l.lastMeeting.date:"";},
+             h:function(l){return '<td class="n">'+(l.lastMeeting
+               ? '<a href="#log='+l.id+'&m='+l.lastMeeting.id+'" target="_blank" rel="noopener">'+fdate(l.lastMeeting.date)+'</a>'
+               : '<span class="sub">None</span>')+'</td>';}},
+  yearpct:  {key:"yearpct", label:"% complete in yr", v:function(l){return l.yearPct;},
+             h:function(l){return '<td class="n">'+pct(l.yearPct)+'</td>';}},
+  status:   {key:"status", label:"Status", v:function(l){return (l.quiet?0:(l.metThisWeek?2:1));},
+             h:function(l){return '<td>'+statusPill(l)+'</td>';}},
+  campus:   {key:"campus", label:"Campus", v:function(l){return l.campus;},
+             h:function(l){return '<td class="sub">'+esc(l.campus)+'</td>';}},
+  gtype:    {key:"gtype", label:"Group type", v:function(l){return l.groupType;},
+             h:function(l){return '<td><span class="tag">'+esc(l.groupType)+'</span></td>';}},
+  gender:   {key:"gender", label:"Gender", v:function(l){return l.gender;},
+             h:function(l){return '<td class="sub">'+gender(l.gender)+'</td>';}},
+  email:    {key:"email", label:"Email", v:function(l){return l.email;},
+             h:function(l){return '<td class="sub">'+esc(l.email)+'</td>';}},
+  phone:    {key:"phone", label:"Phone", v:function(l){return l.phone;},
+             h:function(l){return '<td class="n sub">'+esc(l.phone)+'</td>';}},
+  weeksq:   {key:"weeksq", label:"Weeks since", v:function(l){return -(l.weeksSince==null?99:l.weeksSince);},
+             h:function(l){return '<td class="n">'+(l.weeksSince==null?"—":l.weeksSince)+'</td>';}},
+  dname:    {key:"name", label:"Disciple", v:function(d){return d.last+d.first;},
+             h:function(d){return '<td class="name">'+esc(d.name)+'</td>';}},
+  dleader:  {key:"leader", label:"Leader", v:function(d){return d.leaderName;},
+             h:function(d){return '<td class="sub">'+esc(d.leaderName)+'</td>';}},
+  dstatus:  {key:"dstatus", label:"Group status", v:function(d){return d.quiet?0:1;},
+             h:function(d){return '<td>'+(d.quiet
+               ? '<span class="pill quiet">Group quiet</span>'
+               : '<span class="pill met">Meeting</span>')+'</td>';}},
+  trained:  {key:"trained", label:"Trained", v:function(l){return l.trainedOn||"";},
+             h:function(l){return '<td class="n sub">'+fdate(l.trainedOn)+'</td>';}}
+};
+function cols(){ return Array.prototype.map.call(arguments, function(k){ return COL[k]; }); }
+function detailCols(){ return cols("leader","disciples","start","total","rate","log","recent","yearpct","status","campus","gtype"); }
+function quietCols(){   return cols("leader","weeksq","recent","disciples","total","campus","gtype","email","phone"); }
+function leaderCols(){  return cols("leader","gender","campus","gtype","disciples","total","rate","recent","status","email","phone"); }
+function discipleCols(){return cols("dname","gender","dleader","campus","gtype","start","recent","dstatus","email","phone"); }
+function availCols(){   return cols("leader","gender","campus","gtype","trained","email","phone"); }
+
+/* ---------- generic table ------------------------------------------ */
+function sortRows(tab, rows, columns){
+  var s = state.sort[tab]; if(!s) return rows;
+  var c = columns.filter(function(x){ return x.key === s.key; })[0]; if(!c) return rows;
+  return rows.slice().sort(function(a,b){
+    var x=c.v(a), y=c.v(b);
+    if(x<y) return -1*s.dir; if(x>y) return 1*s.dir; return 0;
+  });
+}
+function table(tab, columns, rows){
+  var s = state.sort[tab] || {};
+  var sel = state.sel[tab] || (state.sel[tab] = new Set());
+  var body = sortRows(tab, rows, columns).map(function(r){
+    return '<tr data-id="'+r.id+'"'+(sel.has(r.id)?' class="sel"':'')+'>'
+      + '<td class="chk"><input type="checkbox" data-id="'+r.id+'"'+(sel.has(r.id)?" checked":"")+' aria-label="Select '+esc(r.name)+'"></td>'
+      + columns.map(function(c){ return c.h(r); }).join("") + '</tr>';
+  }).join("");
+  return '<table><thead><tr><th class="chk"><input type="checkbox" data-all="1" aria-label="Select all rows"></th>'
+    + columns.map(function(c){
+        var ar = s.key===c.key ? (s.dir===1?'&#9650;':'&#9660;') : '';
+        return '<th class="sortable'+((c.key==="total"||c.key==="rate"||c.key==="yearpct"||c.key==="weeksq")?" n":"")
+          +'" data-sort="'+c.key+'">'+esc(c.label)+'<span class="ar">'+ar+'</span></th>';
+      }).join("")
+    + '</tr></thead><tbody>' + body + '</tbody></table>';
+}
+function wireTable(tab, rows, noteId, btnId){
+  var root = document.querySelector('#view-'+(tab==="quiet"?"overview":tab)) || document;
+  var sel = state.sel[tab] || (state.sel[tab] = new Set());
+  var byId = {}; rows.forEach(function(r){ byId[r.id]=r; });
+
+  function refresh(){
+    if(noteId && el(noteId)) el(noteId).textContent = sel.size ? sel.size + " selected" : "";
+    if(btnId && el(btnId)) el(btnId).disabled = sel.size === 0;
+    root.querySelectorAll('tr[data-id]').forEach(function(tr){
+      tr.classList.toggle("sel", sel.has(tr.dataset.id));
+    });
+  }
+  root.querySelectorAll('th[data-sort]').forEach(function(th){
+    th.addEventListener("click", function(){
+      var k = th.dataset.sort, cur = state.sort[tab];
+      state.sort[tab] = (cur && cur.key===k) ? {key:k, dir:-cur.dir} : {key:k, dir:1};
+      render();
+    });
+  });
+  root.querySelectorAll('tbody input[type=checkbox]').forEach(function(cb){
+    cb.addEventListener("change", function(){
+      cb.checked ? sel.add(cb.dataset.id) : sel.delete(cb.dataset.id);
+      refresh();
+    });
+  });
+  var all = root.querySelector('th input[data-all]');
+  if(all) all.addEventListener("change", function(){
+    rows.forEach(function(r){ all.checked ? sel.add(r.id) : sel.delete(r.id); });
+    root.querySelectorAll('tbody input[type=checkbox]').forEach(function(cb){ cb.checked = all.checked; });
+    refresh();
+  });
+  if(btnId && el(btnId)) el(btnId).addEventListener("click", function(){
+    openMessage(Array.from(sel).map(function(id){ return byId[id]; }).filter(Boolean));
+  });
+  refresh();
+}
+
+/* ---------- filter toolbar ------------------------------------------ */
+function filtOf(tab){ return state.filt[tab] || (state.filt[tab] = {q:"",campus:"",groupType:"",gender:"",status:""}); }
+function uniq(arr,k){ var s={}; arr.forEach(function(x){ if(x[k]) s[x[k]]=1; }); return Object.keys(s).sort(); }
+function applyFilter(tab, rows){
+  var f = filtOf(tab);
+  return rows.filter(function(r){
+    if(f.campus && r.campus !== f.campus) return false;
+    if(f.groupType && r.groupType !== f.groupType) return false;
+    if(f.gender && r.gender !== f.gender) return false;
+    if(f.status){
+      if(f.status==="quiet" && !r.quiet) return false;
+      if(f.status==="met" && !r.metThisWeek) return false;
+      if(f.status==="pending" && (r.quiet || r.metThisWeek)) return false;
+    }
+    if(f.q){
+      var hay = (r.name+" "+(r.leaderName||"")+" "+(r.email||"")+" "
+        +(r.disciples?r.disciples.map(function(d){return d.name;}).join(" "):"")).toLowerCase();
+      if(hay.indexOf(f.q.toLowerCase()) < 0) return false;
+    }
+    return true;
+  });
+}
+function toolbar(tab, pool, opts){
+  var f = filtOf(tab);
+  function sel(name, label, vals, cur, disp){
+    return '<select data-f="'+name+'" aria-label="'+label+'"><option value="">'+label+': all</option>'
+      + vals.map(function(v){ return '<option value="'+esc(v)+'"'+(cur===v?" selected":"")+'>'
+          +esc(disp?disp(v):v)+'</option>'; }).join("") + '</select>';
+  }
+  var h = '<div class="tools"><input type="search" data-f="q" value="'+esc(f.q)+'" placeholder="Search names or email">'
+    + sel("campus","Campus",uniq(pool,"campus"),f.campus)
+    + sel("groupType","Group type",uniq(pool,"groupType"),f.groupType)
+    + sel("gender","Gender",["M","F"],f.gender,gender);
+  if(opts && opts.status)
+    h += sel("status","Status",["met","pending","quiet"],f.status,function(v){
+      return v==="met"?"Met this week":v==="pending"?"Awaiting report":"Quiet "+QUIET_WEEKS+"+ weeks"; });
+  h += '<span class="selnote" id="'+tab+'-note"></span>'
+    + '<button class="btn primary" id="'+tab+'-msg" disabled>Message selected</button></div>';
+  return h;
+}
+function wireToolbar(tab){
+  var root = el('view-'+tab); if(!root) return;
+  root.querySelectorAll('[data-f]').forEach(function(c){
+    c.addEventListener(c.tagName==="SELECT" ? "change" : "input", function(){
+      filtOf(tab)[c.dataset.f] = c.value;
+      render();
+      var again = el('view-'+tab).querySelector('[data-f="'+c.dataset.f+'"]');
+      if(again && c.dataset.f==="q"){ again.focus(); again.setSelectionRange(again.value.length,again.value.length); }
+    });
+  });
+}
+
+/* ---------- roster views -------------------------------------------- */
+function renderRoster(tab, title, note, pool, columns, opts){
+  var rows = applyFilter(tab, pool);
+  el('view-'+tab).innerHTML =
+    '<div class="panel"><div class="panel-hd"><h2>'+esc(title)+'</h2><p>'+esc(note)+'</p></div>'
+    + toolbar(tab, pool, opts)
+    + (rows.length
+       ? '<div class="tscroll">' + table(tab, columns, rows) + '</div>'
+       : '<div class="empty"><b>Nothing matches those filters.</b>Clear the search or widen a filter to see records again.</div>')
+    + '</div>';
+  wireToolbar(tab);
+  wireTable(tab, rows, tab+"-note", tab+"-msg");
+}
+function render(){
+  derive();
+  renderTabs();
+  el("yearchip").textContent = "Ministry year " + DATA.meta.ministryYear
+    + " · week " + M.weekNo + " of " + M.weekTotal;
+  TABS.forEach(function(t){ el('view-'+t.id).hidden = t.id !== state.tab; });
+
+  if(state.tab==="overview") renderOverview();
+  if(state.tab==="details")
+    renderRoster("details","Leader and disciple detail",
+      "One row per leader. Meetings % is reported meetings divided by weeks their group has been running.",
+      M.active, detailCols(), {status:true});
+  if(state.tab==="leaders")
+    renderRoster("leaders","Current leaders",
+      M.active.length + " leaders across small groups, discipleship groups and Equip.",
+      M.active, leaderCols(), {status:true});
+  if(state.tab==="disciples")
+    renderRoster("disciples","Current disciples",
+      M.disciples.length + " people currently being discipled.",
+      M.disciples, discipleCols());
+  if(state.tab==="available")
+    renderRoster("available","Available mentors",
+      "Trained and not currently paired. Filter by gender to match a disciple.",
+      M.available, availCols());
+}
+
+/* ---------- messaging ------------------------------------------------ */
+function openMessage(people){
+  state.msg.people = people;
+  state.msg.channel = "email";   // always open on email, not whatever was used last
+  el("msgScrim").hidden = false;
+  el("msgBody").value = "";
+  el("msgSubject").value = "";
+  paintMessage();
+  el("msgSubject").focus();
+}
+function paintMessage(){
+  var ch = state.msg.channel, people = state.msg.people;
+  el("msgTitle").textContent = "Message " + people.length + (people.length===1?" person":" people");
+  el("msgChannel").querySelectorAll("button").forEach(function(b){
+    b.setAttribute("aria-pressed", String(b.dataset.ch === ch));
+  });
+  el("subjField").hidden = ch !== "email";
+  el("recipLabel").textContent = ch === "email" ? "Email addresses" : "Mobile numbers";
+  var field = ch === "email" ? "email" : "phone";
+  var missing = people.filter(function(p){ return !p[field]; });
+  el("msgChips").innerHTML = people.map(function(p){
+    return '<span class="chip'+(p[field]?"":" bad")+'">'+esc(p.name)
+      + (p[field] ? ' · ' + esc(p[field]) : ' · no ' + (ch==="email"?"address":"number") + ' on file') + '</span>';
+  }).join("");
+  el("recipMissing").textContent = missing.length
+    ? missing.length + (missing.length===1?" person has":" people have") + " no " + (ch==="email"?"address":"number")
+      + " on file and will be left out."
+    : "";
+  var live = people.filter(function(p){ return p[field]; }).length;
+  el("msgHint").textContent = ch === "email"
+    ? (live > MAILTO_MAX
+        ? live + " addresses is past what an email app will accept in one link. Use Copy recipients."
+        : "Addresses go in BCC so recipients cannot see each other.")
+    : "Texting runs on the church's existing system. Details on the next screen.";
+  el("msgSend").textContent = ch === "email" ? "Open in email app" : "How texting works";
+}
+function msgRecipients(){
+  var field = state.msg.channel === "email" ? "email" : "phone";
+  return state.msg.people.map(function(p){ return p[field]; }).filter(Boolean);
+}
+function closeMessage(){ el("msgScrim").hidden = true; }
+
+/* A second, stacked dialog used for explanations that carry an action. */
+function openNote(title, html, actionLabel, onAction){
+  el("noteTitle").textContent = title;
+  el("noteBody").innerHTML = '<div class="note">' + html + '</div>';
+  var b = el("noteAction");
+  b.textContent = actionLabel; b.hidden = !actionLabel;
+  b.onclick = function(){ if(onAction) onAction(); };
+  el("noteScrim").hidden = false;
+  el("noteDismiss").focus();
+}
+function closeNote(){ el("noteScrim").hidden = true; }
+
+function copyRecipients(){
+  var to = msgRecipients();
+  var txt = to.join(state.msg.channel === "email" ? ", " : "\n");
+  if(state.msg.channel === "text" && el("msgBody").value) txt += "\n\n" + el("msgBody").value;
+  return navigator.clipboard.writeText(txt).then(function(){
+    toast("Copied " + to.length + " recipients");
+  }, function(){ toast("Copy blocked by the browser. Select the list manually."); });
+}
+
+/* What happens when someone asks to send a text. The dashboard does not
+   send: it explains how it would, then hands off the list.            */
+function explainTexting(){
+  var n = msgRecipients().length;
+  openNote("Texting runs on the church's existing system",
+    '<p class="say">Sending would use the same system Church at The Mill uses now.</p>'
+  + '<p>The weekly attendance texts that go out to small group, discipleship group and Equip '
+  + 'leaders already come from a registered sender. US business texting requires A2P 10DLC '
+  + 'carrier registration, and that registration is already done for whatever sends those. '
+  + 'This dashboard should call that same platform rather than adding a second texting vendor '
+  + 'with a second registration, a second bill and a second number the congregation does not recognize.</p>'
+  + '<h3>What connecting it takes</h3>'
+  + '<ol>'
+  + '<li>Confirm the platform behind the weekly attendance texts and get an API token for it. '
+  + 'Twilio, Clearstream, Text In Church and TouchPoint all expose one.</li>'
+  + '<li>Stand up one small endpoint, a Cloudflare Worker or an Azure Function, that holds that '
+  + 'token as an environment secret. The token never goes in this file: anything in this file is '
+  + 'readable by anyone who can open the page.</li>'
+  + '<li>Point the endpoint at staff sign-in so only the church can call it.</li>'
+  + '<li>Change one function here to post the selection instead of copying it.</li>'
+  + '</ol>'
+  + '<h3>The call this page would make</h3>'
+  + '<pre>POST /api/send-text\n'
+  + 'Content-Type: application/json\n\n'
+  + '{ "to": [' + (n ? '"' + msgRecipients()[0] + '", \u2026 ' + n + ' numbers' : '') + '],\n'
+  + '  "body": "your message" }</pre>'
+  + '<p>The endpoint batches the numbers, calls the platform, and returns per-number success or '
+  + 'failure so this screen can show what actually went out. Until that exists, copy the list '
+  + 'into the platform you already use.</p>',
+    "Copy " + n + (n === 1 ? " number" : " numbers"),
+    function(){ copyRecipients().then(closeNote); });
+}
+
+/* Email past the mailto ceiling cannot ride in a link. Say so plainly. */
+function explainMailtoLimit(n){
+  openNote("Too many addresses for one email link",
+    '<p>' + n + ' addresses will not fit in a mailto link. Browsers and email apps cut these off '
+  + 'somewhere around ' + MAILTO_MAX + ', usually without warning, so some people would silently '
+  + 'not get the message.</p>'
+  + '<h3>Two ways through</h3>'
+  + '<ol>'
+  + '<li>Copy the addresses, paste them into the BCC field in Outlook, and send from there. '
+  + 'Outlook has no such limit.</li>'
+  + '<li>Narrow the selection. Filter by campus or group type and send in a few passes, which '
+  + 'also lets you write something specific to each group.</li>'
+  + '</ol>'
+  + '<p>If the church later wants one-click sending to the whole roster, that runs through the same '
+  + 'endpoint described on the texting screen, sending as a real church mailbox through '
+  + 'Microsoft 365 rather than through the staff member\'s own client.</p>',
+    "Copy " + n + " addresses",
+    function(){ copyRecipients().then(closeNote); });
+}
+
+/* ---------- meeting log (opens in its own tab) ----------------------- */
+function openLog(id){ window.open("#log=" + id, "_blank", "noopener"); }
+function renderLog(id, focusMeeting){
+  var l = M.idx[id];
+  el("app").hidden = true;
+  var v = el("logview"); v.hidden = false;
+  if(!l){ v.innerHTML = '<div class="log"><h1>No leader with that id</h1>'
+    + '<p class="meta">The link may be from an older export.</p></div>'; return; }
+
+  var held = {}; l.meetings.forEach(function(m){ held[m.week] = m; });
+  var rows = M.elapsed.slice().reverse().map(function(w){
+    var m = held[w.monday];
+    if(!m) return '<div class="entry miss"><h3>No meeting reported<span class="wk">Week of '+fdate(w.monday)+'</span></h3></div>';
+    var present = m.present.map(function(x){ var d = DATA.disciples.filter(function(y){return y.id===x;})[0];
+      return d ? d.first+" "+d.last : x; });
+    var absent = m.absent.map(function(x){ var d = DATA.disciples.filter(function(y){return y.id===x;})[0];
+      return d ? d.first+" "+d.last : x; });
+    return '<div class="entry"'+(focusMeeting===m.id?' style="border-color:var(--link);border-width:2px"':'')+'>'
+      + '<h3>'+fdate(m.date)+'<span class="pill met">'+m.present.length+' of '+(m.present.length+m.absent.length)+' present</span>'
+      + '<span class="wk">Week of '+fshort(w.monday)+'</span></h3>'
+      + '<p>Present: '+esc(present.join(", ") || "none recorded")+'</p>'
+      + (absent.length ? '<p>Absent: '+esc(absent.join(", "))+'</p>' : '')
+      + (m.note ? '<p>'+esc(m.note)+'</p>' : '')
+      + '</div>';
+  }).join("");
+
+  v.innerHTML = '<div class="log">'
+    + '<a class="back" href="#" onclick="location.hash=\'\';return false;">&larr; Back to dashboard</a>'
+    + '<h1>'+esc(l.name)+'</h1>'
+    + '<p class="meta">'+esc(l.groupType)+' · '+esc(l.campus)+' campus · started '+fdate(l.startDate)
+    + ' · '+l.totalMet+' meetings held · '+pct(l.meetRate)+' of possible · '+pct(l.yearPct)+' of the ministry year</p>'
+    + '<p class="meta">Disciples: '+esc(l.disciples.map(function(d){return d.name;}).join(", ") || "none assigned")+'</p>'
+    + rows + '</div>';
+}
+function route(){
+  var h = location.hash.slice(1);
+  if(h.indexOf("log=") === 0){
+    derive();
+    var parts = h.split("&"), id = parts[0].slice(4);
+    var mm = (parts[1]||"").indexOf("m=")===0 ? parts[1].slice(2) : null;
+    renderLog(id, mm);
+  } else {
+    el("logview").hidden = true; el("app").hidden = false; render();
+  }
+}
+
+/* ---------- import / export ------------------------------------------ */
+function csvCell(v){ v = v==null ? "" : String(v);
+  return /[",\n]/.test(v) ? '"' + v.replace(/"/g,'""') + '"' : v; }
+function toCsv(rows){ return rows.map(function(r){ return r.map(csvCell).join(","); }).join("\r\n"); }
+function parseCsv(text){
+  var rows=[], row=[], cur="", q=false;
+  text = text.replace(/\r\n/g,"\n").replace(/\r/g,"\n");
+  for(var i=0;i<text.length;i++){
+    var c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else q=false; } else cur+=c; }
+    else if(c==='"') q=true;
+    else if(c===","){ row.push(cur); cur=""; }
+    else if(c==="\n"){ row.push(cur); rows.push(row); row=[]; cur=""; }
+    else cur+=c;
+  }
+  if(cur!=="" || row.length){ row.push(cur); rows.push(row); }
+  return rows.filter(function(r){ return r.length>1 || r[0]!==""; });
+}
+function exportCsv(){
+  var t = state.tab, header, rows, name;
+  if(t==="overview"){
+    name="quiet-leaders";
+    header=["Leader","Weeks since last meeting","Most recent meeting","Disciples","Total met","Campus","Group type","Email","Phone"];
+    rows=M.quietList.map(function(l){ return [l.name,l.weeksSince,l.lastMeeting?l.lastMeeting.date:"",
+      l.disciples.map(function(d){return d.name;}).join("; "),l.totalMet,l.campus,l.groupType,l.email,l.phone]; });
+  } else if(t==="disciples"){
+    name="disciples";
+    header=["Id","Disciple","Gender","Leader","Campus","Group type","Start date","Email","Phone","Group quiet"];
+    rows=applyFilter(t,M.disciples).map(function(d){ return [d.id,d.name,gender(d.gender),d.leaderName,d.campus,
+      d.groupType,d.startDate,d.email,d.phone,d.quiet?"yes":"no"]; });
+  } else if(t==="available"){
+    name="available-mentors";
+    header=["Id","Name","Gender","Campus","Group type","Trained","Email","Phone"];
+    rows=M.available.map(function(l){ return [l.id,l.name,gender(l.gender),l.campus,l.groupType,l.trainedOn,l.email,l.phone]; });
+  } else {
+    name = t==="details" ? "discipleship-detail" : "leaders";
+    header=["Id","Leader","Gender","Disciples","Start date","Total times met","Possible to date","Meetings %",
+            "Most recent meeting","% complete in yr","Weeks since","Campus","Group type","Email","Phone"];
+    rows=applyFilter(t,M.active).map(function(l){ return [l.id,l.name,gender(l.gender),
+      l.disciples.map(function(d){return d.name;}).join("; "),l.startDate,l.totalMet,l.possibleToDate,
+      pct(l.meetRate),l.lastMeeting?l.lastMeeting.date:"",pct(l.yearPct),l.weeksSince,l.campus,l.groupType,l.email,l.phone]; });
+  }
+  download(name + "-" + DATA.meta.generated + ".csv", toCsv([header].concat(rows)), "text/csv;charset=utf-8");
+  toast("Exported " + rows.length + " rows");
+}
+function exportJson(){
+  download("discipleship-data-" + DATA.meta.generated + ".json", JSON.stringify(DATA,null,2), "application/json");
+  toast("Exported full dataset");
+}
+function importFile(file){
+  var r = new FileReader();
+  r.onload = function(){
+    try{
+      if(/\.json$/i.test(file.name)){
+        var d = JSON.parse(r.result);
+        if(!d.leaders || !d.disciples) throw new Error("JSON needs leaders and disciples arrays.");
+        DATA = d;
+        DATA.weeks = DATA.weeks && DATA.weeks.length ? DATA.weeks : buildWeeks(new Date(DATA.meta.generated).getUTCFullYear());
+        TODAY = new Date((DATA.meta.generated || iso(new Date())) + "T12:00:00");
+        state.sel = {}; render();
+        toast("Loaded " + DATA.leaders.length + " leaders and " + DATA.disciples.length + " disciples");
+      } else {
+        var rows = parseCsv(r.result);
+        if(rows.length < 2) throw new Error("That CSV has no data rows.");
+        var head = rows[0].map(function(h){ return h.trim().toLowerCase(); });
+        var recs = rows.slice(1).map(function(rw){
+          var o={}; head.forEach(function(h,i){ o[h]=(rw[i]||"").trim(); }); return o; });
+        if(head.indexOf("leaderid")>=0 && (head.indexOf("date")>=0 || head.indexOf("week")>=0)){
+          DATA.meetings = recs.map(function(o,i){
+            var d = o.date || o.week;
+            return {id:o.id||("M"+(9000+i)), leaderId:o.leaderid, week:o.week||iso(mondayOf(new Date(d+"T12:00:00"))),
+              date:d, present:(o.present||"").split(/[;|]/).filter(Boolean),
+              absent:(o.absent||"").split(/[;|]/).filter(Boolean), note:o.note||""};
+          });
+          toast("Loaded " + DATA.meetings.length + " attendance records");
+        } else if(head.indexOf("leaderid")>=0){
+          DATA.disciples = recs.map(function(o,i){ return {id:o.id||("D"+(900+i)),
+            first:o.first||(o.name||"").split(" ")[0]||"", last:o.last||(o.name||"").split(" ").slice(1).join(" "),
+            gender:(o.gender||"M").toUpperCase()[0]==="F"?"F":"M", email:o.email||"", phone:o.phone||"",
+            leaderId:o.leaderid, campus:o.campus||"", startDate:o.startdate||o["start date"]||""}; });
+          toast("Loaded " + DATA.disciples.length + " disciples");
+        } else {
+          DATA.leaders = recs.map(function(o,i){ return {id:o.id||("L"+(900+i)),
+            first:o.first||(o.name||"").split(" ")[0]||"", last:o.last||(o.name||"").split(" ").slice(1).join(" "),
+            gender:(o.gender||"M").toUpperCase()[0]==="F"?"F":"M", email:o.email||"", phone:o.phone||"",
+            campus:o.campus||"", groupType:o.grouptype||o["group type"]||"Small Group",
+            status:(o.status||"active").toLowerCase(), startDate:o.startdate||o["start date"]||"",
+            trainedOn:o.trained||o.trainedon||""}; });
+          toast("Loaded " + DATA.leaders.length + " leaders");
+        }
+        state.sel = {}; render();
+      }
+    } catch(e){
+      toast("Import failed: " + e.message);
+    }
+  };
+  r.readAsText(file);
+}
+
+/* ---------- wiring ---------------------------------------------------- */
+document.addEventListener("click", function(e){
+  var t = e.target.closest("[data-tab]");
+  if(t){ state.tab = t.dataset.tab; render(); }
+});
+el("btnImport").addEventListener("click", function(){ el("fileInput").click(); });
+el("fileInput").addEventListener("change", function(){
+  if(this.files[0]) importFile(this.files[0]); this.value = "";
+});
+el("btnExportCsv").addEventListener("click", exportCsv);
+el("btnExportJson").addEventListener("click", exportJson);
+el("msgClose").addEventListener("click", closeMessage);
+el("msgScrim").addEventListener("click", function(e){ if(e.target === this) closeMessage(); });
+document.addEventListener("keydown", function(e){
+  if(e.key !== "Escape") return;
+  if(!el("noteScrim").hidden) closeNote(); else closeMessage();
+});
+el("msgChannel").addEventListener("click", function(e){
+  var b = e.target.closest("[data-ch]"); if(!b) return;
+  state.msg.channel = b.dataset.ch; paintMessage();
+});
+el("msgCopy").addEventListener("click", copyRecipients);
+el("msgSend").addEventListener("click", function(){
+  var to = msgRecipients();
+  if(!to.length){ toast("No one in this selection has contact details on file."); return; }
+  if(state.msg.channel === "text"){ explainTexting(); return; }
+  if(to.length > MAILTO_MAX){ explainMailtoLimit(to.length); return; }
+  window.location.href = "mailto:?bcc=" + encodeURIComponent(to.join(","))
+    + "&subject=" + encodeURIComponent(el("msgSubject").value)
+    + "&body=" + encodeURIComponent(el("msgBody").value);
+});
+el("noteClose").addEventListener("click", closeNote);
+el("noteDismiss").addEventListener("click", closeNote);
+el("noteScrim").addEventListener("click", function(e){ if(e.target === this) closeNote(); });
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>
