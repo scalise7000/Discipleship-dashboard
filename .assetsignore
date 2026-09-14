@@ -1,0 +1,6 @@
+git
+.wrangler
+.assetsignore
+wrangler.jsonc
+README.md
+sample-attendance-import.csv
