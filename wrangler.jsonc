@@ -3,6 +3,6 @@
   "compatibility_date": "2026-09-14",
   "preview_urls": false,
   "assets": {
-    "directory": "./"
+    "directory": "./public"
   }
 }
